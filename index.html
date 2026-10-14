@@ -3,18 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <!-- Step 5: Mobile App / Home Screen (PWA) Meta Tags -->
   <meta name="theme-color" content="#2563eb" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="BillAudit" />
   <link rel="manifest" href="manifest.json" />
-  <title>Step 5: Subscription &amp; Bill Audit Tracker (v5 Complete App)</title>
+  <title>Step 6: Subscription &amp; Bill Audit Tracker (v6 Pro)</title>
   <!-- ==========================================
-       PART 2: CSS (Styling, Category Breakdown Chart & Search)
-       Added multi-color category breakdown bar, search/sort bar,
-       and mobile-first touch polish
+       PART 2: CSS (Styling, Edit Mode & Backup Controls)
+       Added Edit Mode highlight banner, Edit button styling,
+       and Backup / Restore toolbar
        ========================================== -->
   <style>
     :root {
@@ -34,7 +33,6 @@
       --success: #059669;
       --success-bg: #ecfdf5;
       --success-border: #a7f3d0;
-      /* Category Chart Colors */
       --cat-ent: #3b82f6;
       --cat-util: #8b5cf6;
       --cat-fit: #10b981;
@@ -281,7 +279,7 @@
       justify-content: space-between;
     }
 
-    /* Step 5: Visual Category Breakdown Bar */
+    /* Visual Category Breakdown Bar */
     .breakdown-box {
       background: var(--bg);
       border: 1px solid var(--border);
@@ -346,13 +344,33 @@
       color: var(--text);
     }
 
-    /* Form Box */
+    /* Step 6: Form Box with Edit Mode Highlight */
     .form-box {
       background: var(--bg);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 12px;
       margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-box.editing {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .edit-banner {
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .form-box.editing .edit-banner {
+      display: flex;
     }
 
     .input-row {
@@ -425,6 +443,18 @@
       background: var(--primary-hover);
     }
 
+    .btn-cancel-edit {
+      display: none;
+      background: var(--subtle-bg);
+      color: var(--text);
+      padding: 10px 14px;
+      white-space: nowrap;
+    }
+
+    .form-box.editing .btn-cancel-edit {
+      display: inline-block;
+    }
+
     .sample-bar {
       display: flex;
       justify-content: space-between;
@@ -440,6 +470,7 @@
       display: flex;
       gap: 10px;
       align-items: center;
+      flex-wrap: wrap;
     }
 
     .btn-link {
@@ -459,7 +490,7 @@
       color: var(--muted);
     }
 
-    /* Step 5: Search & Sort Bar */
+    /* Search & Sort Bar */
     .search-sort-row {
       display: flex;
       gap: 8px;
@@ -531,6 +562,7 @@
       transition: background 0.15s;
       gap: 10px;
       list-style: none !important;
+      flex-wrap: wrap;
     }
 
     .sub-item:last-child {
@@ -600,7 +632,8 @@
     .sub-actions {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      margin-left: auto;
     }
 
     .price-col {
@@ -612,6 +645,13 @@
       font-size: 15px;
       font-weight: 700;
       display: block;
+    }
+
+    .btn-edit {
+      background: var(--subtle-bg);
+      color: var(--text);
+      padding: 6px 10px;
+      font-size: 12px;
     }
 
     .btn-audit {
@@ -652,12 +692,12 @@
 
   <!-- ==========================================
        PART 1: HTML (The Skeleton & Screen Elements)
-       Added Category Breakdown Bar + Search & Sort Controls
+       Added Edit Mode Form Banner + Backup & Restore Buttons
        ========================================== -->
   <div class="app-container">
     <div class="header">
       <div class="top-row">
-        <span class="badge">Step 5 &bull; Complete App (v5)</span>
+        <span class="badge">Step 6 &bull; Inline Edit + Backup &amp; Restore (v6 Pro)</span>
         <div class="top-controls">
           <select id="currencySelect" class="currency-select" onchange="changeCurrency(this.value)">
             <option value="INR">&#8377; INR (Rupee)</option>
@@ -671,7 +711,7 @@
         </div>
       </div>
       <h1>Subscription &amp; Bill Audit Tracker</h1>
-      <p class="subtitle">Track recurring bills in any currency, see your category breakdown, spot upcoming renewals, and cut unused spend.</p>
+      <p class="subtitle">Track recurring bills in any currency, edit prices anytime, back up your data, and cut unused spend.</p>
     </div>
 
     <!-- 3-Card Live Audit Scoreboard -->
@@ -712,15 +752,18 @@
       </div>
     </div>
 
-    <!-- Step 5: Visual Category Spending Breakdown -->
+    <!-- Visual Category Spending Breakdown -->
     <div class="breakdown-box">
       <div class="breakdown-title">Active Spend by Category</div>
       <div class="stacked-bar" id="categoryBar"></div>
       <div class="legend-grid" id="categoryLegend"></div>
     </div>
 
-    <!-- Form with Renewal Day of Month -->
-    <div class="form-box">
+    <!-- Step 6: Form with Inline Edit Mode -->
+    <div class="form-box" id="formBox">
+      <div class="edit-banner">
+        <span id="editBannerText">Editing bill...</span>
+      </div>
       <div class="input-row">
         <input type="text" id="subName" placeholder="Service name (e.g., Netflix, Gym)" />
         <input type="number" id="subCost" placeholder="Amount" min="0.01" step="any" />
@@ -738,20 +781,24 @@
           <option value="Fitness">Health &amp; Fitness</option>
           <option value="Software">Work &amp; Cloud</option>
         </select>
-        <button class="btn-primary" onclick="addSubscription()">+ Add Bill</button>
+        <button class="btn-primary" id="submitBtn" onclick="saveOrAddSubscription()">+ Add Bill</button>
+        <button class="btn-cancel-edit" id="cancelEditBtn" onclick="cancelEdit()">Cancel</button>
       </div>
     </div>
 
     <div class="sample-bar">
-      <span>Click <strong>"Flag to Cut"</strong> on any bill below to test your yearly savings!</span>
+      <span>Tap <strong>"Edit"</strong> to update any bill, or <strong>"Flag to Cut"</strong> to test savings.</span>
       <div class="sample-actions">
-        <button class="btn-link" onclick="loadSamples()">Load sample bills</button>
+        <button class="btn-link" onclick="loadSamples()">Load samples</button>
         <button class="btn-link export" onclick="exportCSV()">Export CSV</button>
+        <button class="btn-link" onclick="backupJSON()">Backup</button>
+        <button class="btn-link" onclick="document.getElementById('restoreFileInput').click()">Restore</button>
+        <input type="file" id="restoreFileInput" accept=".json" style="display:none;" onchange="restoreJSON(event)" />
         <button class="btn-link danger" onclick="clearAll()">Reset</button>
       </div>
     </div>
 
-    <!-- Step 5: Instant Search & Sort Controls -->
+    <!-- Instant Search & Sort Controls -->
     <div class="search-sort-row">
       <input type="text" id="searchInput" placeholder="Search bills by name..." oninput="renderApp()" />
       <select id="sortSelect" onchange="renderApp()">
@@ -774,14 +821,14 @@
     <!-- List of Subscriptions -->
     <div class="list-header">
       <span>BILL, CATEGORY &amp; RENEWAL</span>
-      <span>MONTHLY COST &amp; AUDIT ACTION</span>
+      <span>MONTHLY COST &amp; ACTIONS</span>
     </div>
     <ul id="subList"></ul>
   </div>
 
   <!-- ==========================================
-       PART 3: JAVASCRIPT (The Brain, Visual Breakdown & Search/Sort)
-       Added Category Percentage Chart, Instant Search, and Sorting
+       PART 3: JAVASCRIPT (The Brain, Inline Edit & Backup/Restore)
+       Added startEdit(), cancelEdit(), backupJSON(), and restoreJSON()
        ========================================== -->
   <script>
     const TIMES_SYMBOL = '\u00D7';
@@ -817,6 +864,8 @@
 
     let isDarkMode = localStorage.getItem(THEME_KEY) === 'true';
     let activeCategory = 'All';
+    // Step 6: Track which bill ID is currently being edited (null if adding a new bill)
+    let editingBillId = null;
 
     function formatMoney(amount) {
       const cur = CURRENCIES[currentCurrency];
@@ -884,7 +933,36 @@
       return (daysInMonth - currentDay) + renewalDay;
     }
 
-    function addSubscription() {
+    // Step 6: Load an existing bill into the form for editing
+    function startEdit(id) {
+      const target = subscriptions.find(item => item.id === id);
+      if (!target) return;
+
+      editingBillId = id;
+      document.getElementById('subName').value = target.name;
+      document.getElementById('subCost').value = target.amount;
+      document.getElementById('subRenewalDay').value = target.renewalDay || '';
+      document.getElementById('subCycle').value = target.cycle;
+      document.getElementById('subCategory').value = target.category;
+
+      document.getElementById('formBox').classList.add('editing');
+      document.getElementById('editBannerText').textContent = 'Editing: ' + target.name;
+      document.getElementById('submitBtn').textContent = 'Save Changes';
+      document.getElementById('subName').focus();
+    }
+
+    // Step 6: Exit Edit Mode and clear the form
+    function cancelEdit() {
+      editingBillId = null;
+      document.getElementById('subName').value = '';
+      document.getElementById('subCost').value = '';
+      document.getElementById('subRenewalDay').value = '';
+      document.getElementById('formBox').classList.remove('editing');
+      document.getElementById('submitBtn').textContent = '+ Add Bill';
+    }
+
+    // Step 6: Save edited bill OR add a new bill
+    function saveOrAddSubscription() {
       const nameInput = document.getElementById('subName');
       const costInput = document.getElementById('subCost');
       const dayInput = document.getElementById('subRenewalDay');
@@ -900,20 +978,37 @@
         return;
       }
 
-      subscriptions.push({
-        id: Date.now(),
-        name: name,
-        amount: amount,
-        cycle: cycleInput.value,
-        category: categoryInput.value,
-        renewalDay: renewalDay,
-        flaggedToCut: false
-      });
-
-      nameInput.value = '';
-      costInput.value = '';
-      dayInput.value = '';
-      nameInput.focus();
+      if (editingBillId !== null) {
+        // Update the existing bill in place
+        subscriptions = subscriptions.map(item => {
+          if (item.id === editingBillId) {
+            return Object.assign({}, item, {
+              name: name,
+              amount: amount,
+              cycle: cycleInput.value,
+              category: categoryInput.value,
+              renewalDay: renewalDay
+            });
+          }
+          return item;
+        });
+        cancelEdit();
+      } else {
+        // Add a brand-new bill
+        subscriptions.push({
+          id: Date.now(),
+          name: name,
+          amount: amount,
+          cycle: cycleInput.value,
+          category: categoryInput.value,
+          renewalDay: renewalDay,
+          flaggedToCut: false
+        });
+        nameInput.value = '';
+        costInput.value = '';
+        dayInput.value = '';
+        nameInput.focus();
+      }
 
       saveToBrowser();
       renderApp();
@@ -931,6 +1026,7 @@
     }
 
     function removeSubscription(id) {
+      if (editingBillId === id) cancelEdit();
       subscriptions = subscriptions.filter(item => item.id !== id);
       saveToBrowser();
       renderApp();
@@ -957,11 +1053,13 @@
         { id: 4, name: 'Weekly Game Pass', amount: s[3], cycle: 'weekly', category: 'Entertainment', renewalDay: soonDay, flaggedToCut: true },
         { id: 5, name: 'Unused Gym Membership', amount: s[4], cycle: 'monthly', category: 'Fitness', renewalDay: 18, flaggedToCut: true }
       ];
+      cancelEdit();
       saveToBrowser();
       renderApp();
     }
 
     function clearAll() {
+      cancelEdit();
       subscriptions = [];
       saveToBrowser();
       renderApp();
@@ -1001,7 +1099,59 @@
       URL.revokeObjectURL(url);
     }
 
-    // Step 5: Render Category Breakdown Bar & Legend
+    // Step 6: Backup all bills and settings to a JSON file
+    function backupJSON() {
+      const backupPayload = {
+        version: 6,
+        exportedAt: new Date().toISOString(),
+        currency: currentCurrency,
+        monthlyBudget: monthlyBudget,
+        isDarkMode: isDarkMode,
+        subscriptions: subscriptions
+      };
+      const blob = new Blob([JSON.stringify(backupPayload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'billaudit_backup.json';
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Step 6: Restore bills and settings from a backup JSON file
+    function restoreJSON(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = JSON.parse(e.target.result);
+          if (Array.isArray(data.subscriptions)) {
+            subscriptions = data.subscriptions;
+            if (data.currency && CURRENCIES[data.currency]) currentCurrency = data.currency;
+            if (typeof data.monthlyBudget === 'number' && data.monthlyBudget > 0) {
+              monthlyBudget = data.monthlyBudget;
+              document.getElementById('budgetLimitInput').value = monthlyBudget;
+            }
+            if (typeof data.isDarkMode === 'boolean') {
+              isDarkMode = data.isDarkMode;
+              applyTheme();
+            }
+            cancelEdit();
+            saveToBrowser();
+            renderApp();
+            alert('Backup restored successfully!');
+          } else {
+            alert('Invalid backup file format.');
+          }
+        } catch (err) {
+          alert('Could not read that backup file.');
+        }
+        event.target.value = '';
+      };
+      reader.readAsText(file);
+    }
+
     function renderCategoryBreakdown() {
       const barEl = document.getElementById('categoryBar');
       const legendEl = document.getElementById('categoryLegend');
@@ -1052,14 +1202,12 @@
       document.getElementById('budgetCurrencyLabel').textContent = cur.symbol;
       document.getElementById('subCost').placeholder = 'Amount (' + cur.symbol + ')';
 
-      // Filter by Category AND Search Query
       let visibleSubs = subscriptions.filter(item => {
         const matchesCat = activeCategory === 'All' || item.category === activeCategory;
         const matchesSearch = !searchQuery || item.name.toLowerCase().includes(searchQuery);
         return matchesCat && matchesSearch;
       });
 
-      // Step 5: Sort visible bills
       visibleSubs = visibleSubs.slice().sort((a, b) => {
         const costA = getMonthlyEquivalent(a.amount, a.cycle);
         const costB = getMonthlyEquivalent(b.amount, b.cycle);
@@ -1099,7 +1247,6 @@
       savedElement.textContent = formatMoney(savedYearly);
       savedCountElement.textContent = flaggedCount + (flaggedCount === 1 ? ' bill flagged to cut' : ' bills flagged to cut');
 
-      // Update Monthly Budget Progress Bar
       const pct = monthlyBudget > 0 ? Math.round((keptMonthly / monthlyBudget) * 100) : 0;
       const fillEl = document.getElementById('budgetFill');
       const pctTextEl = document.getElementById('budgetPercentText');
@@ -1122,11 +1269,10 @@
         remTextEl.style.color = 'var(--muted)';
       }
 
-      // Update Step 5 Category Breakdown Bar
       renderCategoryBreakdown();
 
       if (visibleSubs.length === 0) {
-        listElement.innerHTML = '<li class="empty-state">No matching bills found. Add a bill above or click "Load sample bills" to test!</li>';
+        listElement.innerHTML = '<li class="empty-state">No matching bills found. Add a bill above or click "Load samples" to test!</li>';
         return;
       }
 
@@ -1171,6 +1317,7 @@
               <div class="price-col">
                 <span class="sub-price">${formatMoney(monthlyEq)}/mo</span>
               </div>
+              <button class="btn-edit" onclick="startEdit(${item.id})">Edit</button>
               <button class="${auditBtnClass}" onclick="toggleFlagToCut(${item.id})">${auditBtnLabel}</button>
               <button class="btn-delete" title="Delete permanently" onclick="removeSubscription(${item.id})">${TIMES_SYMBOL}</button>
             </div>
@@ -1180,14 +1327,13 @@
     }
 
     document.getElementById('subCost').addEventListener('keydown', function(event) {
-      if (event.key === 'Enter') addSubscription();
+      if (event.key === 'Enter') saveOrAddSubscription();
     });
 
     document.getElementById('budgetLimitInput').value = monthlyBudget;
     applyTheme();
     renderApp();
 
-    // Register offline Service Worker for Android APK packaging (PWABuilder)
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
         navigator.serviceWorker.register('./sw.js').catch(function() {});
