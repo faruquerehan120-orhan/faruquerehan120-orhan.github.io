@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.faruquerehan120_orhan.twa",
+        "sha256_cert_fingerprints": ["45:94:CE:DF:70:72:BF:B4:2F:E3:1B:E3:9B:CB:63:A0:A6:DE:78:C5:72:E1:CB:EE:27:8A:55:2B:FD:C5:13:5D"]
+      }
+    }]
