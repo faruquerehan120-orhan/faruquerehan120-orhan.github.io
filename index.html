@@ -9,11 +9,10 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="BillAudit" />
   <link rel="manifest" href="manifest.json" />
-  <title>Step 6: Subscription &amp; Bill Audit Tracker (v6 Pro)</title>
+  <title>Step 7: Subscription &amp; Bill Audit Tracker (v7 Split &amp; Share Edition)</title>
   <!-- ==========================================
-       PART 2: CSS (Styling, Edit Mode & Backup Controls)
-       Added Edit Mode highlight banner, Edit button styling,
-       and Backup / Restore toolbar
+       PART 2: CSS (Styling, Shared Bill Badge & Layout)
+       Added purple .split-tag badge for shared family/roommate bills
        ========================================== -->
   <style>
     :root {
@@ -33,6 +32,8 @@
       --success: #059669;
       --success-bg: #ecfdf5;
       --success-border: #a7f3d0;
+      --purple-bg: rgba(139, 92, 246, 0.14);
+      --purple-text: #7c3aed;
       --cat-ent: #3b82f6;
       --cat-util: #8b5cf6;
       --cat-fit: #10b981;
@@ -56,6 +57,8 @@
       --success: #34d399;
       --success-bg: rgba(16, 185, 129, 0.12);
       --success-border: rgba(16, 185, 129, 0.35);
+      --purple-bg: rgba(167, 139, 250, 0.2);
+      --purple-text: #c4b5fd;
     }
 
     * {
@@ -344,7 +347,7 @@
       color: var(--text);
     }
 
-    /* Step 6: Form Box with Edit Mode Highlight */
+    /* Form Box with Edit Mode Highlight */
     .form-box {
       background: var(--bg);
       border: 1px solid var(--border);
@@ -401,22 +404,22 @@
 
     #subName {
       flex: 2;
-      min-width: 160px;
+      min-width: 150px;
     }
 
     #subCost {
       flex: 1;
-      min-width: 105px;
+      min-width: 100px;
     }
 
     #subRenewalDay {
       flex: 1;
-      min-width: 125px;
+      min-width: 120px;
     }
 
-    #subCycle, #subCategory {
+    #subCycle, #subCategory, #subSplit {
       flex: 1;
-      min-width: 120px;
+      min-width: 115px;
     }
 
     button {
@@ -606,6 +609,16 @@
       color: var(--muted);
     }
 
+    /* Step 7: Purple badge for Shared / Family Split Bills */
+    .split-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--purple-bg);
+      color: var(--purple-text);
+    }
+
     .alert-tag {
       font-size: 11px;
       font-weight: 700;
@@ -692,12 +705,12 @@
 
   <!-- ==========================================
        PART 1: HTML (The Skeleton & Screen Elements)
-       Added Edit Mode Form Banner + Backup & Restore Buttons
+       Added #subSplit dropdown for Shared / Family Plans
        ========================================== -->
   <div class="app-container">
     <div class="header">
       <div class="top-row">
-        <span class="badge">Step 6 &bull; Inline Edit + Backup &amp; Restore (v6 Pro)</span>
+        <span class="badge">Step 7 &bull; Bill Splitter + Complete Edition (v7)</span>
         <div class="top-controls">
           <select id="currencySelect" class="currency-select" onchange="changeCurrency(this.value)">
             <option value="INR">&#8377; INR (Rupee)</option>
@@ -711,20 +724,20 @@
         </div>
       </div>
       <h1>Subscription &amp; Bill Audit Tracker</h1>
-      <p class="subtitle">Track recurring bills in any currency, edit prices anytime, back up your data, and cut unused spend.</p>
+      <p class="subtitle">Track personal &amp; shared family bills in any currency, split costs fairly, spot renewals, and cut unused spend.</p>
     </div>
 
     <!-- 3-Card Live Audit Scoreboard -->
     <div class="summary-grid">
       <div class="summary-card">
-        <div class="summary-label">Active Monthly Burn</div>
+        <div class="summary-label">Your Monthly Share</div>
         <div class="summary-value" id="monthlyTotal">&#8377;0</div>
         <div class="summary-note" id="activeCount">0 active bills kept</div>
       </div>
       <div class="summary-card highlight">
         <div class="summary-label">1-Year Reality Check</div>
         <div class="summary-value" id="yearlyTotal">&#8377;0</div>
-        <div class="summary-note" id="filterNote">Active yearly spend</div>
+        <div class="summary-note" id="filterNote">Your yearly spend</div>
       </div>
       <div class="summary-card savings">
         <div class="summary-label">Annual Money Saved</div>
@@ -754,19 +767,19 @@
 
     <!-- Visual Category Spending Breakdown -->
     <div class="breakdown-box">
-      <div class="breakdown-title">Active Spend by Category</div>
+      <div class="breakdown-title">Your Active Spend by Category</div>
       <div class="stacked-bar" id="categoryBar"></div>
       <div class="legend-grid" id="categoryLegend"></div>
     </div>
 
-    <!-- Step 6: Form with Inline Edit Mode -->
+    <!-- Step 7: Form with Shared Bill Splitter (#subSplit) -->
     <div class="form-box" id="formBox">
       <div class="edit-banner">
         <span id="editBannerText">Editing bill...</span>
       </div>
       <div class="input-row">
-        <input type="text" id="subName" placeholder="Service name (e.g., Netflix, Gym)" />
-        <input type="number" id="subCost" placeholder="Amount" min="0.01" step="any" />
+        <input type="text" id="subName" placeholder="Service name (e.g., Family Netflix, Wi-Fi)" />
+        <input type="number" id="subCost" placeholder="Total Bill" min="0.01" step="any" />
         <input type="number" id="subRenewalDay" placeholder="Renewal day (1-31)" min="1" max="31" />
       </div>
       <div class="input-row">
@@ -781,13 +794,21 @@
           <option value="Fitness">Health &amp; Fitness</option>
           <option value="Software">Work &amp; Cloud</option>
         </select>
+        <select id="subSplit" title="Split this bill among multiple people">
+          <option value="1">Just Me (1 person)</option>
+          <option value="2">Split by 2 people</option>
+          <option value="3">Split by 3 people</option>
+          <option value="4">Split by 4 people</option>
+          <option value="5">Split by 5 people</option>
+          <option value="6">Split by 6 people</option>
+        </select>
         <button class="btn-primary" id="submitBtn" onclick="saveOrAddSubscription()">+ Add Bill</button>
         <button class="btn-cancel-edit" id="cancelEditBtn" onclick="cancelEdit()">Cancel</button>
       </div>
     </div>
 
     <div class="sample-bar">
-      <span>Tap <strong>"Edit"</strong> to update any bill, or <strong>"Flag to Cut"</strong> to test savings.</span>
+      <span>Tap <strong>"Edit"</strong> to split any bill, or <strong>"Flag to Cut"</strong> to test savings.</span>
       <div class="sample-actions">
         <button class="btn-link" onclick="loadSamples()">Load samples</button>
         <button class="btn-link export" onclick="exportCSV()">Export CSV</button>
@@ -802,8 +823,8 @@
     <div class="search-sort-row">
       <input type="text" id="searchInput" placeholder="Search bills by name..." oninput="renderApp()" />
       <select id="sortSelect" onchange="renderApp()">
-        <option value="cost-desc">Sort: Highest Monthly Cost</option>
-        <option value="cost-asc">Sort: Lowest Monthly Cost</option>
+        <option value="cost-desc">Sort: Highest Personal Share</option>
+        <option value="cost-asc">Sort: Lowest Personal Share</option>
         <option value="renewal">Sort: Renewing Soonest</option>
         <option value="name">Sort: Name (A-Z)</option>
       </select>
@@ -820,30 +841,31 @@
 
     <!-- List of Subscriptions -->
     <div class="list-header">
-      <span>BILL, CATEGORY &amp; RENEWAL</span>
-      <span>MONTHLY COST &amp; ACTIONS</span>
+      <span>BILL, SPLIT &amp; RENEWAL</span>
+      <span>YOUR MONTHLY SHARE &amp; ACTIONS</span>
     </div>
     <ul id="subList"></ul>
   </div>
 
   <!-- ==========================================
-       PART 3: JAVASCRIPT (The Brain, Inline Edit & Backup/Restore)
-       Added startEdit(), cancelEdit(), backupJSON(), and restoreJSON()
+       PART 3: JAVASCRIPT (The Brain & Shared Bill Splitter)
+       Added getPersonalMonthlyShare() dividing bill by splitCount
        ========================================== -->
   <script>
     const TIMES_SYMBOL = '\u00D7';
+    const DIVIDE_SYMBOL = '\u00F7';
     const STORAGE_KEY = 'sub_audit_tracker_v2_data';
     const CURRENCY_KEY = 'sub_audit_tracker_currency';
     const BUDGET_KEY = 'sub_audit_tracker_budget';
     const THEME_KEY = 'sub_audit_tracker_dark';
 
     const CURRENCIES = {
-      INR: { symbol: '\u20B9', code: 'INR', locale: 'en-IN', defaultBudget: 2000, samples: [499, 1499, 799, 99, 1200] },
-      USD: { symbol: '$',      code: 'USD', locale: 'en-US', defaultBudget: 60,   samples: [15.49, 139, 65, 4.99, 40] },
-      EUR: { symbol: '\u20AC', code: 'EUR', locale: 'en-IE', defaultBudget: 55,   samples: [13.99, 99, 45, 3.99, 35] },
-      BDT: { symbol: '\u09F3', code: 'BDT', locale: 'en-IN', defaultBudget: 2500, samples: [600, 1800, 1000, 120, 1500] },
-      GBP: { symbol: '\u00A3', code: 'GBP', locale: 'en-GB', defaultBudget: 50,   samples: [10.99, 95, 40, 3.49, 35] },
-      JPY: { symbol: '\u00A5', code: 'JPY', locale: 'ja-JP', defaultBudget: 8000, samples: [1490, 5900, 4500, 600, 6000] }
+      INR: { symbol: '\u20B9', code: 'INR', locale: 'en-IN', defaultBudget: 2000, samples: [649, 1499, 799, 99, 1200] },
+      USD: { symbol: '$',      code: 'USD', locale: 'en-US', defaultBudget: 60,   samples: [22.99, 139, 70, 4.99, 40] },
+      EUR: { symbol: '\u20AC', code: 'EUR', locale: 'en-IE', defaultBudget: 55,   samples: [19.99, 99, 50, 3.99, 35] },
+      BDT: { symbol: '\u09F3', code: 'BDT', locale: 'en-IN', defaultBudget: 2500, samples: [800, 1800, 1000, 120, 1500] },
+      GBP: { symbol: '\u00A3', code: 'GBP', locale: 'en-GB', defaultBudget: 50,   samples: [17.99, 95, 44, 3.49, 35] },
+      JPY: { symbol: '\u00A5', code: 'JPY', locale: 'ja-JP', defaultBudget: 8000, samples: [1980, 5900, 4800, 600, 6000] }
     };
 
     const CATEGORY_META = [
@@ -864,12 +886,11 @@
 
     let isDarkMode = localStorage.getItem(THEME_KEY) === 'true';
     let activeCategory = 'All';
-    // Step 6: Track which bill ID is currently being edited (null if adding a new bill)
     let editingBillId = null;
 
     function formatMoney(amount) {
       const cur = CURRENCIES[currentCurrency];
-      const hasDecimals = (cur.code === 'USD' || cur.code === 'EUR' || cur.code === 'GBP') && (amount % 1 !== 0);
+      const hasDecimals = (cur.code === 'USD' || cur.code === 'EUR' || cur.code === 'GBP') && (Math.round(amount * 100) % 100 !== 0);
       const formattedNum = hasDecimals
         ? amount.toLocaleString(cur.locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
         : Math.round(amount).toLocaleString(cur.locale);
@@ -918,10 +939,18 @@
       }
     }
 
-    function getMonthlyEquivalent(amount, cycle) {
+    // Total monthly cost of the bill before splitting
+    function getFullMonthlyEquivalent(amount, cycle) {
       if (cycle === 'yearly') return amount / 12;
       if (cycle === 'weekly') return (amount * 52) / 12;
       return amount;
+    }
+
+    // Step 7: Your personal monthly share after dividing by splitCount
+    function getPersonalMonthlyShare(item) {
+      const fullMonthly = getFullMonthlyEquivalent(item.amount, item.cycle);
+      const splitCount = (item.splitCount && item.splitCount > 1) ? item.splitCount : 1;
+      return fullMonthly / splitCount;
     }
 
     function getDaysUntilRenewal(renewalDay) {
@@ -933,7 +962,6 @@
       return (daysInMonth - currentDay) + renewalDay;
     }
 
-    // Step 6: Load an existing bill into the form for editing
     function startEdit(id) {
       const target = subscriptions.find(item => item.id === id);
       if (!target) return;
@@ -944,6 +972,7 @@
       document.getElementById('subRenewalDay').value = target.renewalDay || '';
       document.getElementById('subCycle').value = target.cycle;
       document.getElementById('subCategory').value = target.category;
+      document.getElementById('subSplit').value = String(target.splitCount || 1);
 
       document.getElementById('formBox').classList.add('editing');
       document.getElementById('editBannerText').textContent = 'Editing: ' + target.name;
@@ -951,27 +980,28 @@
       document.getElementById('subName').focus();
     }
 
-    // Step 6: Exit Edit Mode and clear the form
     function cancelEdit() {
       editingBillId = null;
       document.getElementById('subName').value = '';
       document.getElementById('subCost').value = '';
       document.getElementById('subRenewalDay').value = '';
+      document.getElementById('subSplit').value = '1';
       document.getElementById('formBox').classList.remove('editing');
       document.getElementById('submitBtn').textContent = '+ Add Bill';
     }
 
-    // Step 6: Save edited bill OR add a new bill
     function saveOrAddSubscription() {
       const nameInput = document.getElementById('subName');
       const costInput = document.getElementById('subCost');
       const dayInput = document.getElementById('subRenewalDay');
       const cycleInput = document.getElementById('subCycle');
       const categoryInput = document.getElementById('subCategory');
+      const splitInput = document.getElementById('subSplit');
 
       const name = nameInput.value.trim();
       const amount = parseFloat(costInput.value);
       const renewalDay = parseInt(dayInput.value, 10) || null;
+      const splitCount = parseInt(splitInput.value, 10) || 1;
 
       if (!name || isNaN(amount) || amount <= 0) {
         alert('Please enter both a service name and a valid bill amount.');
@@ -979,7 +1009,6 @@
       }
 
       if (editingBillId !== null) {
-        // Update the existing bill in place
         subscriptions = subscriptions.map(item => {
           if (item.id === editingBillId) {
             return Object.assign({}, item, {
@@ -987,14 +1016,14 @@
               amount: amount,
               cycle: cycleInput.value,
               category: categoryInput.value,
-              renewalDay: renewalDay
+              renewalDay: renewalDay,
+              splitCount: splitCount
             });
           }
           return item;
         });
         cancelEdit();
       } else {
-        // Add a brand-new bill
         subscriptions.push({
           id: Date.now(),
           name: name,
@@ -1002,11 +1031,13 @@
           cycle: cycleInput.value,
           category: categoryInput.value,
           renewalDay: renewalDay,
+          splitCount: splitCount,
           flaggedToCut: false
         });
         nameInput.value = '';
         costInput.value = '';
         dayInput.value = '';
+        splitInput.value = '1';
         nameInput.focus();
       }
 
@@ -1041,17 +1072,18 @@
       renderApp();
     }
 
+    // Step 7: Load sample bills including Family Netflix (split by 4) & Shared Wi-Fi (split by 2)!
     function loadSamples() {
       const todayDay = new Date().getDate();
       const soonDay = ((todayDay + 2) % 28) + 1;
       const s = CURRENCIES[currentCurrency].samples;
 
       subscriptions = [
-        { id: 1, name: 'Netflix Standard', amount: s[0], cycle: 'monthly', category: 'Entertainment', renewalDay: soonDay, flaggedToCut: false },
-        { id: 2, name: 'Annual Shopping / Prime', amount: s[1], cycle: 'yearly', category: 'Entertainment', renewalDay: 25, flaggedToCut: false },
-        { id: 3, name: 'Home Fiber Wi-Fi', amount: s[2], cycle: 'monthly', category: 'Utilities', renewalDay: 5, flaggedToCut: false },
-        { id: 4, name: 'Weekly Game Pass', amount: s[3], cycle: 'weekly', category: 'Entertainment', renewalDay: soonDay, flaggedToCut: true },
-        { id: 5, name: 'Unused Gym Membership', amount: s[4], cycle: 'monthly', category: 'Fitness', renewalDay: 18, flaggedToCut: true }
+        { id: 1, name: 'Netflix Family Plan', amount: s[0], cycle: 'monthly', category: 'Entertainment', renewalDay: soonDay, splitCount: 4, flaggedToCut: false },
+        { id: 2, name: 'Annual Shopping / Prime', amount: s[1], cycle: 'yearly', category: 'Entertainment', renewalDay: 25, splitCount: 1, flaggedToCut: false },
+        { id: 3, name: 'Shared Home Fiber Wi-Fi', amount: s[2], cycle: 'monthly', category: 'Utilities', renewalDay: 5, splitCount: 2, flaggedToCut: false },
+        { id: 4, name: 'Weekly Game Pass', amount: s[3], cycle: 'weekly', category: 'Entertainment', renewalDay: soonDay, splitCount: 1, flaggedToCut: true },
+        { id: 5, name: 'Unused Gym Membership', amount: s[4], cycle: 'monthly', category: 'Fitness', renewalDay: 18, splitCount: 1, flaggedToCut: true }
       ];
       cancelEdit();
       saveToBrowser();
@@ -1075,18 +1107,20 @@
         'Service Name',
         'Category',
         'Billing Cycle',
-        'Billed Amount (' + code + ')',
-        'Monthly Equivalent (' + code + ')',
-        'Yearly Cost (' + code + ')',
+        'Total Billed Amount (' + code + ')',
+        'Split Between (People)',
+        'Your Monthly Share (' + code + ')',
+        'Your Yearly Share (' + code + ')',
         'Renewal Day',
         'Audit Status'
       ];
       const rows = subscriptions.map(item => {
-        const monthlyEq = Math.round(getMonthlyEquivalent(item.amount, item.cycle) * 100) / 100;
-        const yearlyEq = Math.round(monthlyEq * 12 * 100) / 100;
+        const splitCount = item.splitCount || 1;
+        const myMonthly = Math.round(getPersonalMonthlyShare(item) * 100) / 100;
+        const myYearly = Math.round(myMonthly * 12 * 100) / 100;
         const status = item.flaggedToCut ? 'FLAGGED TO CUT' : 'KEEP';
         const safeName = '"' + item.name.replace(/"/g, '""') + '"';
-        return [safeName, item.category, item.cycle, item.amount, monthlyEq, yearlyEq, item.renewalDay || '-', status].join(',');
+        return [safeName, item.category, item.cycle, item.amount, splitCount, myMonthly, myYearly, item.renewalDay || '-', status].join(',');
       });
 
       const csvContent = [headers.join(',')].concat(rows).join('\n');
@@ -1099,10 +1133,9 @@
       URL.revokeObjectURL(url);
     }
 
-    // Step 6: Backup all bills and settings to a JSON file
     function backupJSON() {
       const backupPayload = {
-        version: 6,
+        version: 7,
         exportedAt: new Date().toISOString(),
         currency: currentCurrency,
         monthlyBudget: monthlyBudget,
@@ -1118,7 +1151,6 @@
       URL.revokeObjectURL(url);
     }
 
-    // Step 6: Restore bills and settings from a backup JSON file
     function restoreJSON(event) {
       const file = event.target.files && event.target.files[0];
       if (!file) return;
@@ -1161,7 +1193,7 @@
 
       for (const item of subscriptions) {
         if (!item.flaggedToCut) {
-          const m = getMonthlyEquivalent(item.amount, item.cycle);
+          const m = getPersonalMonthlyShare(item);
           totalsByCat[item.category] = (totalsByCat[item.category] || 0) + m;
           grandTotal += m;
         }
@@ -1200,7 +1232,7 @@
 
       document.getElementById('currencySelect').value = currentCurrency;
       document.getElementById('budgetCurrencyLabel').textContent = cur.symbol;
-      document.getElementById('subCost').placeholder = 'Amount (' + cur.symbol + ')';
+      document.getElementById('subCost').placeholder = 'Total Bill (' + cur.symbol + ')';
 
       let visibleSubs = subscriptions.filter(item => {
         const matchesCat = activeCategory === 'All' || item.category === activeCategory;
@@ -1209,8 +1241,8 @@
       });
 
       visibleSubs = visibleSubs.slice().sort((a, b) => {
-        const costA = getMonthlyEquivalent(a.amount, a.cycle);
-        const costB = getMonthlyEquivalent(b.amount, b.cycle);
+        const costA = getPersonalMonthlyShare(a);
+        const costB = getPersonalMonthlyShare(b);
         if (sortMode === 'cost-desc') return costB - costA;
         if (sortMode === 'cost-asc') return costA - costB;
         if (sortMode === 'name') return a.name.localeCompare(b.name);
@@ -1228,12 +1260,12 @@
       let flaggedCount = 0;
 
       for (const item of visibleSubs) {
-        const monthlyEq = getMonthlyEquivalent(item.amount, item.cycle);
+        const myShare = getPersonalMonthlyShare(item);
         if (item.flaggedToCut) {
-          savedMonthly += monthlyEq;
+          savedMonthly += myShare;
           flaggedCount++;
         } else {
-          keptMonthly += monthlyEq;
+          keptMonthly += myShare;
           keptCount++;
         }
       }
@@ -1277,11 +1309,18 @@
       }
 
       listElement.innerHTML = visibleSubs.map(item => {
-        const monthlyEq = getMonthlyEquivalent(item.amount, item.cycle);
-        const yearlyEq = monthlyEq * 12;
+        const splitCount = (item.splitCount && item.splitCount > 1) ? item.splitCount : 1;
+        const fullMonthly = getFullMonthlyEquivalent(item.amount, item.cycle);
+        const myMonthly = fullMonthly / splitCount;
+        const myYearly = myMonthly * 12;
+
         const cycleLabel = item.cycle === 'monthly'
           ? 'billed monthly'
           : formatMoney(item.amount) + ' billed ' + item.cycle;
+
+        const splitBadge = splitCount > 1
+          ? `<span class="split-tag">Split ${DIVIDE_SYMBOL}${splitCount} (Full: ${formatMoney(fullMonthly)}/mo)</span>`
+          : '';
 
         const daysLeft = getDaysUntilRenewal(item.renewalDay);
         let renewalBadge = '';
@@ -1296,7 +1335,7 @@
         }
 
         const statusBadge = item.flaggedToCut
-          ? `<span class="saved-tag">Saves ${formatMoney(yearlyEq)}/yr</span>`
+          ? `<span class="saved-tag">Saves ${formatMoney(myYearly)}/yr</span>`
           : '';
 
         const auditBtnLabel = item.flaggedToCut ? 'Keep Bill' : 'Flag to Cut';
@@ -1308,14 +1347,15 @@
               <div class="sub-title-row">
                 <span class="sub-title">${item.name}</span>
                 <span class="cat-tag">${item.category}</span>
+                ${splitBadge}
                 ${renewalBadge}
                 ${statusBadge}
               </div>
-              <span class="sub-yearly">Costs ${formatMoney(yearlyEq)} / year (${cycleLabel})</span>
+              <span class="sub-yearly">Your share: ${formatMoney(myYearly)} / year (${cycleLabel})</span>
             </div>
             <div class="sub-actions">
               <div class="price-col">
-                <span class="sub-price">${formatMoney(monthlyEq)}/mo</span>
+                <span class="sub-price">${formatMoney(myMonthly)}/mo</span>
               </div>
               <button class="btn-edit" onclick="startEdit(${item.id})">Edit</button>
               <button class="${auditBtnClass}" onclick="toggleFlagToCut(${item.id})">${auditBtnLabel}</button>
