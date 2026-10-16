@@ -982,6 +982,48 @@
     .toast-banner.show {
       transform: translateX(-50%) translateY(0);
     }
+
+    /* Built-in User Guide Modal & Share Button */
+    .btn-guide {
+      height: 36px;
+      padding: 0 10px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--primary-soft);
+      color: var(--primary);
+      cursor: pointer;
+    }
+
+    .guide-step {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .guide-step:last-child {
+      border-bottom: none;
+    }
+
+    .guide-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
   </style>
 </head>
 <body>
@@ -1001,6 +1043,7 @@
           </div>
         </div>
         <div class="top-controls">
+          <button class="btn-guide" id="guideBtn" onclick="openGuideSheet()">? Guide</button>
           <select id="currencySelect" class="currency-select" onchange="changeCurrency(this.value)">
             <option value="INR">&#8377; INR</option>
             <option value="USD">$ USD</option>
@@ -1110,6 +1153,8 @@
         <div class="sample-bar">
           <span style="font-size:13px; color:var(--muted);">Manage your saved expenses, export a spreadsheet, or back up your phone data:</span>
           <div class="sample-actions">
+            <button class="btn-link" onclick="openGuideSheet()">User Guide</button>
+            <button class="btn-link export" onclick="shareApp()">Share App</button>
             <button class="btn-link" onclick="loadSamples()">Load samples</button>
             <button class="btn-link export" onclick="exportCSV()">Export CSV</button>
             <button class="btn-link" onclick="backupJSON()">Backup</button>
@@ -1209,6 +1254,37 @@
     </div>
   </div>
 
+
+  <!-- Built-In User Guide & Share Sheet -->
+  <div class="sheet-backdrop" id="guideBackdrop" onclick="handleGuideBackdrop(event)">
+    <div class="form-box">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <span class="sheet-title">How to Use BillAudit</span>
+        <button class="btn-cancel-edit" style="display:inline-block; height:36px;" onclick="closeGuideSheet()">Close</button>
+      </div>
+      <div class="guide-step">
+        <span class="guide-num">1</span>
+        <div><strong>Pick Your Currency:</strong> Tap the currency menu at the top (INR, USD, EUR, BDT, GBP, JPY) to track bills in your local money.</div>
+      </div>
+      <div class="guide-step">
+        <span class="guide-num">2</span>
+        <div><strong>Add Living Costs &amp; Subscriptions:</strong> Tap <strong>+ Add New Bill</strong> at the bottom to log Rent, Groceries, Transport, Utilities, or Subscriptions—and use <strong>Split Cost</strong> to divide shared family or roommate bills automatically.</div>
+      </div>
+      <div class="guide-step">
+        <span class="guide-num">3</span>
+        <div><strong>Audit &amp; Test Your Savings:</strong> Tap <strong>Flag to Cut</strong> on any unused subscription to cross it out and see how much money you save over a full year in the green <strong>Annual Saved</strong> card.</div>
+      </div>
+      <div class="guide-step">
+        <span class="guide-num">4</span>
+        <div><strong>Install on Your Phone &amp; Back Up:</strong> In your phone browser menu, tap <strong>Add to Home Screen / Install App</strong> for 100% offline full-screen access, and use <strong>Backup &amp; Tools</strong> to save or export your data anytime.</div>
+      </div>
+      <div class="sheet-actions">
+        <button class="btn-primary" onclick="shareApp()">Share App with Friends</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const TIMES_SYMBOL = '\u00D7';
     const DIVIDE_SYMBOL = '\u00F7';
@@ -1294,6 +1370,46 @@
         document.getElementById(tabs[k].btn).classList.toggle('active', isTarget);
         document.getElementById(tabs[k].panel).classList.toggle('active', isTarget);
       });
+    }
+
+    function openGuideSheet() {
+      document.getElementById('guideBackdrop').classList.add('open');
+    }
+
+    function closeGuideSheet() {
+      document.getElementById('guideBackdrop').classList.remove('open');
+    }
+
+    function handleGuideBackdrop(e) {
+      if (e.target && e.target.id === 'guideBackdrop') {
+        closeGuideSheet();
+      }
+    }
+
+    function shareApp() {
+      const shareUrl = window.location.href.startsWith('http')
+        ? window.location.href
+        : 'https://faruquerehan120-orhan.github.io/';
+      const shareText = 'Track monthly rent, groceries, transport & subscriptions—and see how much you save per year with BillAudit (100% free & private): ' + shareUrl;
+      if (navigator.share) {
+        navigator.share({
+          title: 'BillAudit • Expense & Subscription Tracker',
+          text: shareText,
+          url: shareUrl
+        }).catch(function() {});
+      } else {
+        const tempInput = document.createElement('textarea');
+        tempInput.value = shareText;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        try {
+          document.execCommand('copy');
+          showToast('App invite link copied to clipboard!');
+        } catch (err) {
+          showToast('Share link: ' + shareUrl);
+        }
+        document.body.removeChild(tempInput);
+      }
     }
 
     function openFormSheet() {
