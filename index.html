@@ -3,1970 +3,1212 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#2563eb" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="apple-mobile-web-app-title" content="BillAudit" />
-  <link rel="manifest" href="manifest.json" />
-  <title>BillAudit • All-in-One Monthly Expense, Bill &amp; Subscription Tracker</title>
+  <title>GST Invoice, Quotation & Bill Maker</title>
+  <link rel="manifest" href="./manifest.json" />
+  <meta name="theme-color" content="#1e3a8a" />
+  <link rel="apple-touch-icon" href="./icon-192.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root {
-      --bg: #f1f5f9;
-      --card: #ffffff;
-      --subtle-bg: #f8fafc;
-      --pill-bg: #e2e8f0;
-      --text: #0f172a;
-      --muted: #64748b;
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --primary-soft: rgba(37, 99, 235, 0.1);
-      --danger: #dc2626;
-      --danger-bg: #fef2f2;
-      --accent-amber: #d97706;
-      --highlight-bg: #fffbeb;
-      --highlight-border: #fde68a;
-      --border: #e2e8f0;
-      --success: #059669;
-      --success-bg: #ecfdf5;
-      --success-border: #a7f3d0;
-      --purple-bg: rgba(124, 58, 237, 0.12);
-      --purple-text: #6d28d9;
-      /* 8 Multi-Goal Category Colors */
-      --cat-rent: #e11d48;
-      --cat-groc: #16a34a;
-      --cat-tran: #0891b2;
-      --cat-util: #8b5cf6;
-      --cat-ent: #3b82f6;
-      --cat-fit: #10b981;
-      --cat-soft: #f59e0b;
-      --cat-edu: #ea580c;
-      --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
-      --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.16);
-    }
-
-    body.dark-mode {
-      --bg: #0b1120;
-      --card: #1e293b;
-      --subtle-bg: #0f172a;
-      --pill-bg: #334155;
-      --text: #f8fafc;
-      --muted: #94a3b8;
-      --primary: #3b82f6;
-      --primary-hover: #2563eb;
-      --primary-soft: rgba(59, 130, 246, 0.18);
-      --danger: #f87171;
-      --danger-bg: rgba(239, 68, 68, 0.16);
-      --accent-amber: #fbbf24;
-      --highlight-bg: rgba(245, 158, 11, 0.12);
-      --highlight-border: rgba(245, 158, 11, 0.35);
-      --border: #334155;
-      --success: #34d399;
-      --success-bg: rgba(16, 185, 129, 0.14);
-      --success-border: rgba(16, 185, 129, 0.35);
-      --purple-bg: rgba(167, 139, 250, 0.2);
-      --purple-text: #ddd6fe;
-      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
-      --shadow-lg: 0 12px 36px rgba(0, 0, 0, 0.5);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
     body {
-      background-color: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding: 0 0 92px 0;
-      display: flex;
-      justify-content: center;
-      transition: background-color 0.2s, color 0.2s;
-    }
-
-    .app-container {
-      width: 100%;
-      max-width: 520px;
-      padding: 14px 14px 24px 14px;
-    }
-
-    /* Sticky Mobile App Top Bar */
-    .header {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 14px 16px;
-      margin-bottom: 12px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .top-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .brand-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .app-logo {
-      width: 38px;
-      height: 38px;
-      border-radius: 11px;
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 18px;
-      flex-shrink: 0;
-      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
-    }
-
-    .brand-text h1 {
-      font-size: 17px;
-      font-weight: 800;
-      line-height: 1.2;
-      letter-spacing: -0.01em;
-    }
-
-    .badge {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--primary);
-      background: var(--primary-soft);
-      padding: 2px 8px;
-      border-radius: 999px;
-      margin-top: 2px;
-    }
-
-    .subtitle {
-      display: none;
-    }
-
-    .top-controls {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .currency-select,
-    .btn-theme {
-      height: 36px;
-      padding: 0 10px;
-      font-size: 12px;
-      font-weight: 700;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--subtle-bg);
-      color: var(--text);
-      cursor: pointer;
-    }
-
-    /* Compact Mobile Bento Scoreboard */
-    .summary-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .summary-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 14px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .summary-card.hero-card {
-      grid-column: 1 / -1;
-      background: linear-gradient(135deg, #1e40af, #2563eb);
-      border-color: transparent;
-      color: #ffffff;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 18px;
-      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.22);
-    }
-
-    .summary-card.hero-card .summary-label,
-    .summary-card.hero-card .summary-note {
-      color: rgba(255, 255, 255, 0.85);
-    }
-
-    .summary-card.hero-card .summary-value {
-      color: #ffffff;
-      font-size: 28px;
-    }
-
-    .hero-Add-btn {
-      background: #ffffff;
-      color: #1d4ed8;
-      border: none;
-      border-radius: 12px;
-      padding: 10px 14px;
-      font-size: 13px;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-      white-space: nowrap;
-    }
-
-    .summary-card.highlight {
-      background: var(--highlight-bg);
-      border-color: var(--highlight-border);
-    }
-
-    .summary-card.savings {
-      background: var(--success-bg);
-      border-color: var(--success-border);
-    }
-
-    .summary-label {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-
-    .summary-value {
-      font-size: 20px;
-      font-weight: 800;
-      color: var(--text);
-      line-height: 1.15;
-    }
-
-    .summary-card.highlight .summary-value {
-      color: var(--accent-amber);
-    }
-
-    .summary-card.savings .summary-value {
-      color: var(--success);
-    }
-
-    .summary-note {
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 3px;
-    }
-
-    /* Segmented Mobile Tab Switcher */
-    .mobile-tabs {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 4px;
-      margin-bottom: 12px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .tab-btn {
-      background: transparent;
-      color: var(--muted);
-      border: none;
-      border-radius: 10px;
-      padding: 9px 6px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.15s, color 0.15s;
-    }
-
-    .tab-btn.active {
-      background: var(--primary);
-      color: #ffffff;
-    }
-
-    .tab-panel {
-      display: none;
-    }
-
-    .tab-panel.active {
-      display: block;
-    }
-
-    /* Compact Budget Bar & Category Chart Cards */
-    .budget-box,
-    .breakdown-box,
-    .tools-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 14px 16px;
-      margin-bottom: 12px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .budget-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-      gap: 8px;
-    }
-
-    .budget-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .budget-input-wrap {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--muted);
-    }
-
-    .budget-input-wrap input {
-      width: 96px;
-      padding: 6px 8px;
-      font-size: 13px;
-      font-weight: 700;
-      text-align: right;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--subtle-bg);
-      color: var(--text);
-    }
-
-    .progress-track {
-      width: 100%;
-      height: 10px;
-      background: var(--pill-bg);
-      border-radius: 999px;
-      overflow: hidden;
-      margin-bottom: 6px;
-    }
-
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: var(--success);
-      border-radius: 999px;
-      transition: width 0.25s ease, background-color 0.25s ease;
-    }
-
-    .progress-fill.warn {
-      background: var(--accent-amber);
-    }
-
-    .progress-fill.over {
-      background: var(--danger);
-    }
-
-    .budget-status {
-      font-size: 12px;
-      color: var(--muted);
-      display: flex;
-      justify-content: space-between;
-      font-weight: 500;
-    }
-
-    .breakdown-title {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
-    .stacked-bar {
-      width: 100%;
-      height: 12px;
-      background: var(--pill-bg);
-      border-radius: 999px;
-      overflow: hidden;
-      display: flex;
-      margin-bottom: 12px;
-    }
-
-    .bar-seg {
-      height: 100%;
-      transition: width 0.3s ease;
-    }
-
-    .legend-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px 12px;
-      font-size: 12px;
-    }
-
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--muted);
-    }
-
-    .legend-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .legend-pct {
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    /* Search, Sort & Horizontal Swipeable Category Pills */
-    .search-sort-row {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    #searchInput {
-      flex: 1.4;
-      min-width: 0;
-      height: 42px;
-      padding: 0 12px;
-      font-size: 14px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--text);
-    }
-
-    #sortSelect {
-      flex: 1;
-      min-width: 0;
-      height: 42px;
-      padding: 0 10px;
-      font-size: 13px;
-      font-weight: 600;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--text);
-    }
-
-    .filter-bar {
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-      margin-bottom: 10px;
-      scrollbar-width: none;
-    }
-
-    .filter-bar::-webkit-scrollbar {
-      display: none;
-    }
-
-    .filter-pill {
-      background: var(--card);
-      color: var(--muted);
-      border: 1px solid var(--border);
-      padding: 8px 14px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      white-space: nowrap;
-      flex-shrink: 0;
-      cursor: pointer;
-    }
-
-    .filter-pill.active {
-      background: var(--text);
-      color: var(--card);
-      border-color: var(--text);
-    }
-
-    /* Mobile Card List for Bills & Expenses */
-    .list-header {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--muted);
-      padding: 0 4px 6px 4px;
-      display: flex;
-      justify-content: space-between;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    ul {
-      list-style: none !important;
-      padding-left: 0 !important;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .sub-item {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 14px;
-      box-shadow: var(--shadow-sm);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      list-style: none !important;
-      transition: transform 0.12s, opacity 0.15s;
-    }
-
-    .sub-item.flagged {
-      opacity: 0.68;
-      background: var(--subtle-bg);
-    }
-
-    .sub-item.flagged .sub-title,
-    .sub-item.flagged .sub-price {
-      text-decoration: line-through;
-      color: var(--muted);
-    }
-
-    .card-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 10px;
-    }
-
-    .card-left {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      min-width: 0;
-    }
-
-    .cat-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 800;
-      color: #ffffff;
-      flex-shrink: 0;
-    }
-
-    .sub-info {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      min-width: 0;
-    }
-
-    .sub-title-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .sub-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .cat-tag {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: var(--subtle-bg);
-      border: 1px solid var(--border);
-      color: var(--muted);
-    }
-
-    .split-tag {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: var(--purple-bg);
-      color: var(--purple-text);
-    }
-
-    .alert-tag {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: rgba(245, 158, 11, 0.18);
-      color: var(--accent-amber);
-    }
-
-    .saved-tag {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: var(--success-bg);
-      color: var(--success);
-    }
-
-    .sub-yearly {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .price-col {
-      text-align: right;
-      flex-shrink: 0;
-    }
-
-    .sub-price {
-      font-size: 17px;
-      font-weight: 800;
-      color: var(--text);
-      display: block;
-    }
-
-    .sub-cycle-sub {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    /* Thumb-Friendly Card Bottom Action Strip */
-    .sub-actions {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 8px;
-      padding-top: 8px;
-      border-top: 1px solid var(--border);
-    }
-
-    button {
-      cursor: pointer;
-      border: none;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 700;
-      transition: background 0.15s, transform 0.05s;
-    }
-
-    button:active {
-      transform: scale(0.97);
-    }
-
-    .btn-edit {
-      background: var(--subtle-bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 8px 14px;
-      font-size: 12px;
-    }
-
-    .btn-audit {
-      background: var(--danger-bg);
-      color: var(--danger);
-      padding: 8px 14px;
-      font-size: 12px;
-      flex: 1;
-      max-width: 150px;
-    }
-
-    .btn-audit.keep {
-      background: var(--success-bg);
-      color: var(--success);
-    }
-
-    .btn-delete {
-      background: var(--subtle-bg);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 8px 12px;
-      font-size: 14px;
-      line-height: 1;
-    }
-
-    /* Tools & Data Management Grid (Tab 3) */
-    .sample-bar {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .sample-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .btn-link {
-      background: var(--subtle-bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-size: 13px;
-      font-weight: 700;
-      text-decoration: none;
-      padding: 12px 10px;
-      border-radius: 12px;
-      text-align: center;
-    }
-
-    .btn-link.export {
-      background: var(--success-bg);
-      border-color: var(--success-border);
-      color: var(--success);
-    }
-
-    .btn-link.danger {
-      background: var(--danger-bg);
-      color: var(--danger);
-      grid-column: 1 / -1;
-    }
-
-    .empty-state {
-      background: var(--card);
-      border: 1px dashed var(--border);
-      border-radius: 16px;
-      text-align: center;
-      padding: 32px 16px;
-      color: var(--muted);
-      font-size: 14px;
-      list-style: none !important;
-    }
-
-    .empty-cta {
-      margin-top: 12px;
-      display: inline-flex;
-      gap: 8px;
-    }
-
-    /* Sticky Bottom Action Bar for Easy One-Thumb Mobile Use */
-    .bottom-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--card);
-      border-top: 1px solid var(--border);
-      padding: 10px 16px;
-      display: flex;
-      justify-content: center;
-      z-index: 40;
-      box-shadow: 0 -4px 16px rgba(15, 23, 42, 0.06);
-    }
-
-    .bottom-bar-inner {
-      width: 100%;
-      max-width: 492px;
-      display: flex;
-      gap: 10px;
-    }
-
-    .btn-fab-add {
-      flex: 1;
-      height: 46px;
-      background: var(--primary);
-      color: #ffffff;
-      font-size: 15px;
-      font-weight: 800;
-      border-radius: 14px;
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
-    }
-
-    .btn-fab-samples {
-      height: 46px;
-      padding: 0 14px;
-      background: var(--subtle-bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-size: 13px;
-      font-weight: 700;
-      border-radius: 14px;
-    }
-
-    /* Slide-Up Mobile Bottom Sheet for Add / Edit Bill Form */
-    .sheet-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.55);
-      z-index: 50;
-      display: none;
-      align-items: flex-end;
-      justify-content: center;
-      padding: 0;
-    }
-
-    .sheet-backdrop.open {
-      display: flex;
-    }
-
-    .form-box {
-      width: 100%;
-      max-width: 520px;
-      background: var(--card);
-      border-radius: 22px 22px 0 0;
-      padding: 18px 16px 24px 16px;
-      box-shadow: var(--shadow-lg);
-      max-height: 92vh;
-      overflow-y: auto;
-    }
-
-    .sheet-handle {
-      width: 40px;
-      height: 4px;
-      background: var(--border);
-      border-radius: 999px;
-      margin: 0 auto 12px auto;
-    }
-
-    .sheet-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .sheet-title {
-      font-size: 17px;
-      font-weight: 800;
-    }
-
-    /* 1-Tap Quick Expense & Subscription Presets inside the Add Sheet */
-    .preset-label {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 6px;
-      display: block;
-    }
-
-    .preset-row {
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      padding-bottom: 6px;
-      margin-bottom: 12px;
-      scrollbar-width: none;
-    }
-
-    .preset-row::-webkit-scrollbar {
-      display: none;
-    }
-
-    .preset-chip {
-      background: var(--subtle-bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 600;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .edit-banner {
-      display: none;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--primary);
-      background: var(--primary-soft);
-      padding: 6px 10px;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    }
-
-    .form-box.editing .edit-banner {
-      display: flex;
-    }
-
-    .input-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .field-group {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .field-group.full-width {
-      grid-column: 1 / -1;
-    }
-
-    .field-label {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--muted);
-    }
-
-    input, select {
-      height: 44px;
-      padding: 0 12px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      font-size: 15px;
-      background: var(--subtle-bg);
-      color: var(--text);
-      outline: none;
-      width: 100%;
-    }
-
-    input:focus, select:focus {
-      border-color: var(--primary);
-      background: var(--card);
-    }
-
-    .sheet-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 14px;
-    }
-
-    .btn-primary {
-      flex: 1;
-      height: 46px;
-      background: var(--primary);
-      color: #ffffff;
-      font-size: 15px;
-      font-weight: 800;
-      border-radius: 12px;
-    }
-
-    .btn-cancel-edit {
-      height: 46px;
-      background: var(--subtle-bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 0 16px;
-      border-radius: 12px;
-    }
-
-    /* In-App Mobile Toast Banner */
-    .toast-banner {
-      position: fixed;
-      top: 16px;
-      left: 50%;
-      transform: translateX(-50%) translateY(-120%);
-      background: #0f172a;
-      color: #ffffff;
-      padding: 10px 18px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 700;
-      box-shadow: var(--shadow-lg);
-      z-index: 100;
-      transition: transform 0.25s ease;
-      pointer-events: none;
-    }
-
-    .toast-banner.show {
-      transform: translateX(-50%) translateY(0);
-    }
-
-    /* Built-in User Guide Modal & Share Button */
-    .btn-guide {
-      height: 36px;
-      padding: 0 10px;
-      font-size: 12px;
-      font-weight: 700;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--primary-soft);
-      color: var(--primary);
-      cursor: pointer;
-    }
-
-    .guide-step {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 13px;
-      line-height: 1.45;
-    }
-
-    .guide-step:last-child {
-      border-bottom: none;
-    }
-
-    .guide-num {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: var(--primary);
-      color: #ffffff;
-      font-size: 12px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-top: 1px;
+      font-family: 'Inter', sans-serif;
+      background-color: #f1f5f9;
+      color: #0f172a;
+    }
+    .editable-field:hover {
+      background-color: #eff6ff;
+      outline: 1px dashed #3b82f6;
+      border-radius: 4px;
+      cursor: text;
+    }
+    .editable-field:focus {
+      background-color: #ffffff;
+      outline: 2px solid #2563eb;
+      border-radius: 4px;
+      padding: 2px 4px;
+    }
+    /* Custom scrollbar for catalog */
+    .catalog-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .catalog-scroll::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 6px;
+    }
+    .catalog-scroll::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 6px;
+    }
+    .catalog-scroll::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printableArea, #printableArea * {
+        visibility: visible;
+      }
+      #printableArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        box-shadow: none !important;
+        border: none !important;
+        margin: 0 !important;
+        padding: 16px !important;
+      }
+      .no-print {
+        display: none !important;
+      }
     }
   </style>
 </head>
-<body>
+<body class="min-h-screen pb-16">
 
-  <!-- In-App Toast Notification -->
-  <div class="toast-banner" id="toastBanner">Saved!</div>
-
-  <div class="app-container">
-    <!-- Compact Mobile App Header -->
-    <div class="header">
-      <div class="top-row">
-        <div class="brand-wrap">
-          <div class="app-logo" id="logoSymbol">&#8377;</div>
-          <div class="brand-text">
-            <h1>BillAudit</h1>
-            <span class="badge">All-in-One Expense &amp; Bill Tracker</span>
-          </div>
+  <!-- TOP HEADER -->
+  <header class="bg-blue-900 text-white shadow-md sticky top-0 z-30 no-print">
+    <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-amber-400 text-blue-950 font-extrabold flex items-center justify-center text-sm shadow-inner shrink-0">
+          GST
         </div>
-        <div class="top-controls">
-          <button class="btn-guide" id="guideBtn" onclick="openGuideSheet()">? Guide</button>
-          <select id="currencySelect" class="currency-select" onchange="changeCurrency(this.value)">
-            <option value="INR">&#8377; INR</option>
-            <option value="USD">$ USD</option>
-            <option value="EUR">&euro; EUR</option>
-            <option value="BDT">&#2547; BDT</option>
-            <option value="GBP">&pound; GBP</option>
-            <option value="JPY">&yen; JPY</option>
-          </select>
-          <button class="btn-theme" id="themeBtn" onclick="toggleDarkMode()">Dark Mode</button>
-        </div>
-      </div>
-      <p class="subtitle">Track rent, groceries, transport, utilities, and subscriptions in any currency.</p>
-    </div>
-
-    <!-- Compact Bento Scoreboard (Hero Card + 2 Side-by-Side Cards) -->
-    <div class="summary-grid">
-      <div class="summary-card hero-card">
         <div>
-          <div class="summary-label">Your Monthly Share</div>
-          <div class="summary-value" id="monthlyTotal">&#8377;0</div>
-          <div class="summary-note" id="activeCount">0 active bills kept</div>
+          <h1 class="font-extrabold text-base sm:text-lg leading-tight tracking-tight">GST Invoice, Quotation & Bill Maker</h1>
+          <p class="text-[11px] text-blue-200 font-medium">Invoice • Quotation • UPI QR Receipt</p>
         </div>
-        <button class="hero-Add-btn" onclick="openFormSheet()">+ Add Bill</button>
       </div>
-      <div class="summary-card highlight">
-        <div class="summary-label">1-Year Reality</div>
-        <div class="summary-value" id="yearlyTotal">&#8377;0</div>
-        <div class="summary-note" id="filterNote">Your yearly spend</div>
-      </div>
-      <div class="summary-card savings">
-        <div class="summary-label">Annual Saved</div>
-        <div class="summary-value" id="savedTotal">&#8377;0</div>
-        <div class="summary-note" id="savedCount">0 bills flagged to cut</div>
+
+      <div class="flex items-center gap-2">
+        <span id="proStatusBadge" class="hidden bg-emerald-500 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow">
+          ★ PRO UNLOCKED
+        </span>
+        <button id="openProModalBtn" type="button" onclick="openProModal()" class="bg-amber-400 hover:bg-amber-300 text-blue-950 font-extrabold text-xs sm:text-sm px-3 py-2 rounded-lg shadow transition flex items-center gap-1 shrink-0">
+          <span>👑 Unlock Pro (₹299)</span>
+        </button>
       </div>
     </div>
 
-    <!-- Mobile 3-Tab Switcher -->
-    <div class="mobile-tabs">
-      <button class="tab-btn active" id="tabBtnBills" onclick="switchTab('bills')">My Bills</button>
-      <button class="tab-btn" id="tabBtnInsights" onclick="switchTab('insights')">Budget &amp; Chart</button>
-      <button class="tab-btn" id="tabBtnTools" onclick="switchTab('tools')">Backup &amp; Tools</button>
+    <!-- NAVIGATION TABS -->
+    <div class="max-w-4xl mx-auto px-4 flex border-t border-blue-800/80 bg-blue-950/40 text-xs sm:text-sm font-semibold">
+      <button type="button" id="tabBtnEdit" onclick="switchTab('edit')" class="flex-1 py-2.5 text-center border-b-2 border-amber-400 text-amber-300">
+        1. Edit Bill
+      </button>
+      <button type="button" id="tabBtnPreview" onclick="switchTab('preview')" class="flex-1 py-2.5 text-center border-b-2 border-transparent text-blue-200 hover:text-white">
+        2. Preview & PDF
+      </button>
+      <button type="button" id="tabBtnHistory" onclick="switchTab('history')" class="flex-1 py-2.5 text-center border-b-2 border-transparent text-blue-200 hover:text-white">
+        3. Saved Bills (<span id="savedCountBadge">0</span>)
+      </button>
     </div>
+  </header>
 
-    <!-- TAB 1: MY BILLS & LIVING EXPENSES -->
-    <div class="tab-panel active" id="panelBills">
-      <!-- Swipeable Multi-Goal Category Filter Pills -->
-      <div class="filter-bar" id="filterBar">
-        <button class="filter-pill active" onclick="setFilter('All')">All</button>
-        <button class="filter-pill" onclick="setFilter('Rent')">Rent &amp; Housing</button>
-        <button class="filter-pill" onclick="setFilter('Groceries')">Groceries &amp; Food</button>
-        <button class="filter-pill" onclick="setFilter('Transport')">Transportation</button>
-        <button class="filter-pill" onclick="setFilter('Utilities')">Utilities &amp; Wi-Fi</button>
-        <button class="filter-pill" onclick="setFilter('Entertainment')">Entertainment</button>
-        <button class="filter-pill" onclick="setFilter('Fitness')">Health &amp; Fitness</button>
-        <button class="filter-pill" onclick="setFilter('Software')">Work &amp; Cloud</button>
-        <button class="filter-pill" onclick="setFilter('Education')">Education &amp; EMIs</button>
-      </div>
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-4xl mx-auto px-3 sm:px-4 pt-4">
 
-      <!-- Instant Search & Sort Controls -->
-      <div class="search-sort-row">
-        <input type="text" id="searchInput" placeholder="Search rent, grocery, bills..." oninput="renderApp()" />
-        <select id="sortSelect" onchange="renderApp()">
-          <option value="cost-desc">Highest Cost</option>
-          <option value="cost-asc">Lowest Cost</option>
-          <option value="renewal">Due Soonest</option>
-          <option value="name">Name (A-Z)</option>
-        </select>
-      </div>
+    <!-- ================= TAB 1: EDIT BILL ================= -->
+    <section id="tabEdit" class="space-y-4">
 
-      <div class="list-header">
-        <span>EXPENSE, CATEGORY &amp; DUE DAY</span>
-        <span>YOUR SHARE</span>
-      </div>
-      <ul id="subList"></ul>
-    </div>
-
-    <!-- TAB 2: BUDGET & CATEGORY BREAKDOWN CHART -->
-    <div class="tab-panel" id="panelInsights">
-      <div class="budget-box">
-        <div class="budget-header">
-          <span class="budget-title">Monthly Budget Limit</span>
-          <div class="budget-input-wrap">
-            <span id="budgetCurrencyLabel">&#8377;</span>
-            <input type="number" id="budgetLimitInput" min="1" step="any" onchange="updateBudgetLimit(this.value)" oninput="updateBudgetLimit(this.value)" />
-            <span>/ mo</span>
+      <!-- BUSINESS / SHOP HEADER DETAILS -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+        <div class="flex items-center justify-between mb-3">
+          <div>
+            <h2 class="font-bold text-slate-800 text-sm sm:text-base">🏪 Your Business / Shop Details (Bill Header)</h2>
+            <p class="text-xs text-slate-500">Anyone using this app can put their own shop name, phone & address here.</p>
           </div>
+          <button type="button" onclick="clearBusinessHeader()" class="text-xs font-semibold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-2.5 py-1 rounded-md transition">
+            Clear to Blank
+          </button>
         </div>
-        <div class="progress-track">
-          <div class="progress-fill" id="budgetFill"></div>
-        </div>
-        <div class="budget-status">
-          <span id="budgetPercentText">0% of monthly budget used</span>
-          <span id="budgetRemainingText">Within safe limit</span>
-        </div>
-      </div>
 
-      <div class="breakdown-box">
-        <div class="breakdown-title">Your Active Spend by Category</div>
-        <div class="stacked-bar" id="categoryBar"></div>
-        <div class="legend-grid" id="categoryLegend"></div>
-      </div>
-    </div>
-
-    <!-- TAB 3: DATA BACKUP, EXPORT & SAMPLE TOOLS -->
-    <div class="tab-panel" id="panelTools">
-      <div class="tools-card">
-        <div class="sample-bar">
-          <span style="font-size:13px; color:var(--muted);">Manage your saved expenses, export a spreadsheet, or back up your phone data:</span>
-          <div class="sample-actions">
-            <button class="btn-link" onclick="openGuideSheet()">User Guide</button>
-            <button class="btn-link export" onclick="shareApp()">Share App</button>
-            <button class="btn-link" onclick="loadSamples()">Load samples</button>
-            <button class="btn-link export" onclick="exportCSV()">Export CSV</button>
-            <button class="btn-link" onclick="backupJSON()">Backup</button>
-            <button class="btn-link" onclick="document.getElementById('restoreFileInput').click()">Restore</button>
-            <input type="file" id="restoreFileInput" accept=".json" style="display:none;" onchange="restoreJSON(event)" />
-            <button class="btn-link danger" onclick="clearAll()">Reset</button>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Logo Short Text (2-4 letters)</label>
+            <input type="text" id="bizLogoInput" maxlength="5" placeholder="e.g. RD&" oninput="syncFormToState()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none font-bold" />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Business / Shop Name</label>
+            <input type="text" id="bizNameInput" placeholder="e.g. Rehan Digital & Trading" oninput="syncFormToState()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none font-semibold" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Phone & City / Address</label>
+            <input type="text" id="bizAddressInput" placeholder="+91 98000 00000 • West Bengal, India" oninput="syncFormToState()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Your GSTIN (Optional)</label>
+            <input type="text" id="bizGstinInput" placeholder="e.g. 19ABCDE1234F1Z5" oninput="syncFormToState()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm uppercase focus:ring-2 focus:ring-blue-600 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Your UPI ID (For Customer QR)</label>
+            <input type="text" id="bizUpiInput" placeholder="e.g. shopname@ybl" oninput="syncFormToState()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none" />
           </div>
         </div>
       </div>
+
+      <!-- INVOICE & CUSTOMER INFO -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+        <h2 class="font-bold text-slate-800 text-sm sm:text-base mb-3">📄 Document & Customer Details</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Document Type</label>
+            <select id="docTitleInput" onchange="syncFormToState()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm font-semibold bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none">
+              <option value="TAX INVOICE">TAX INVOICE</option>
+              <option value="INVOICE">INVOICE</option>
+              <option value="QUOTATION / ESTIMATE">QUOTATION / ESTIMATE</option>
+              <option value="PROFORMA INVOICE">PROFORMA INVOICE</option>
+              <option value="CASH MEMO / RECEIPT">CASH MEMO / RECEIPT</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Invoice / Bill No.</label>
+            <input type="text" id="invNumberInput" placeholder="INV-101" oninput="syncFormToState()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm font-semibold focus:ring-2 focus:ring-blue-600 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Invoice Date (DD/MM/YYYY)</label>
+            <input type="text" id="invDateInput" placeholder="26/10/2026" oninput="syncFormToState()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Customer / Client Name</label>
+            <input type="text" id="custNameInput" placeholder="Walk-in Customer / Rahul Sharma" oninput="syncFormToState()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Customer WhatsApp / Phone</label>
+            <input type="tel" id="custPhoneInput" placeholder="e.g. 9876543210" oninput="syncFormToState()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Customer Address / GSTIN</label>
+            <input type="text" id="custAddressInput" placeholder="Kolkata, WB" oninput="syncFormToState()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ADD PRODUCTS OR SERVICES (WITH 100 BUILT-IN SCROLLABLE ITEMS) -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+          <div>
+            <h2 class="font-bold text-slate-800 text-sm sm:text-base">🛒 Add Products or Services</h2>
+            <p class="text-xs text-slate-500">Scroll and tap any built-in item below, or type your own item name to auto-match.</p>
+          </div>
+          <span id="matchStatusBadge" class="hidden text-xs font-bold bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full border border-emerald-300">
+            ✓ Built-In Service/Item Matches Highlighted!
+          </span>
+        </div>
+
+        <!-- Category Filter Pills -->
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-2 mb-2 text-xs">
+          <button type="button" onclick="filterCatalogCategory('ALL')" id="catBtn_ALL" class="px-2.5 py-1 rounded-full font-bold bg-blue-900 text-white shrink-0">All (100)</button>
+          <button type="button" onclick="filterCatalogCategory('Grocery')" id="catBtn_Grocery" class="px-2.5 py-1 rounded-full font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0">🌾 Grocery & Kirana</button>
+          <button type="button" onclick="filterCatalogCategory('Food')" id="catBtn_Food" class="px-2.5 py-1 rounded-full font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0">🍛 Food & Bakery</button>
+          <button type="button" onclick="filterCatalogCategory('Services')" id="catBtn_Services" class="px-2.5 py-1 rounded-full font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0">🔧 Repair & Services</button>
+          <button type="button" onclick="filterCatalogCategory('Digital')" id="catBtn_Digital" class="px-2.5 py-1 rounded-full font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0">💻 Digital & Coaching</button>
+          <button type="button" onclick="filterCatalogCategory('Retail')" id="catBtn_Retail" class="px-2.5 py-1 rounded-full font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0">📦 Electronics & Retail</button>
+        </div>
+
+        <!-- Scrollable 100-item Quick Catalog Box -->
+        <div id="catalogScrollBox" class="catalog-scroll max-h-40 overflow-y-auto border border-slate-200 bg-slate-50 rounded-lg p-2 mb-4 flex flex-wrap gap-1.5">
+          <!-- Dynamically populated by renderCatalogChips() -->
+        </div>
+
+        <!-- Item Entry Inputs -->
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-end bg-blue-50/60 p-3 rounded-xl border border-blue-100">
+          <div class="sm:col-span-4">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Item / Service Description</label>
+            <input type="text" id="itemNameInput" placeholder="Type e.g. Basmati Rice, Biryani, AC..." oninput="handleItemNameTyping(this.value)" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none font-medium" />
+          </div>
+
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Quantity</label>
+            <input type="number" id="itemQtyInput" value="1" min="0.01" step="any" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none font-semibold" />
+          </div>
+
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Unit</label>
+            <select id="itemUnitInput" class="w-full border border-slate-300 rounded-lg px-2.5 py-2 text-sm bg-white font-semibold focus:ring-2 focus:ring-blue-600 focus:outline-none">
+              <option value="pcs">Pieces (pcs)</option>
+              <option value="kg">Kilogram (kg)</option>
+              <option value="gm">Gram (gm)</option>
+              <option value="ltr">Litre (ltr)</option>
+              <option value="ml">Millilitre (ml)</option>
+              <option value="pkt">Packet (pkt)</option>
+              <option value="plate">Plate / Dish</option>
+              <option value="box">Box / Carton</option>
+              <option value="doz">Dozen (doz)</option>
+              <option value="mtr">Meter (mtr)</option>
+              <option value="hrs">Hours (hrs)</option>
+              <option value="days">Days</option>
+              <option value="service">Service / Job</option>
+              <option value="month">Month</option>
+            </select>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Unit Price (₹)</label>
+            <input type="number" id="itemPriceInput" placeholder="0.00" min="0" step="any" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none font-semibold" />
+          </div>
+
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold text-slate-700 mb-1">GST %</label>
+            <select id="itemGstInput" class="w-full border border-slate-300 rounded-lg px-2.5 py-2 text-sm bg-white font-semibold focus:ring-2 focus:ring-blue-600 focus:outline-none">
+              <option value="0">0% (No GST)</option>
+              <option value="5">5% GST</option>
+              <option value="12">12% GST</option>
+              <option value="18" selected>18% GST</option>
+              <option value="28">28% GST</option>
+            </select>
+          </div>
+
+          <div class="sm:col-span-12 flex justify-end pt-1">
+            <button type="button" onclick="addItemFromForm()" class="w-full sm:w-auto bg-blue-800 hover:bg-blue-900 text-white font-bold text-sm px-6 py-2.5 rounded-lg shadow transition flex items-center justify-center gap-1.5">
+              <span>＋ Add Item to Bill</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- CURRENT BILL ITEMS LIST -->
+        <div class="mt-4">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500">Items in Current Bill</h3>
+            <button type="button" onclick="clearAllItems()" class="text-xs text-red-600 hover:underline font-medium">Remove All Items</button>
+          </div>
+          <div id="editItemsList" class="space-y-2"></div>
+        </div>
+
+        <!-- TOTAL SUMMARY BAR -->
+        <div class="mt-4 pt-3 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3 bg-slate-50 p-3 rounded-lg">
+          <div class="text-xs sm:text-sm space-y-0.5">
+            <div>Subtotal: <strong id="editSubtotalText">₹0.00</strong> | Total GST: <strong id="editGstText">₹0.00</strong></div>
+            <div class="text-base sm:text-lg font-extrabold text-blue-900">Grand Total: <span id="editGrandTotalText">₹0.00</span></div>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button type="button" onclick="saveCurrentBill()" class="bg-slate-800 hover:bg-slate-900 text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-lg shadow transition">
+              💾 Save Bill
+            </button>
+            <button type="button" onclick="switchTab('preview')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-lg shadow transition">
+              👁️ View Invoice & Print PDF →
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 2: PREVIEW & PDF ================= -->
+    <section id="tabPreview" class="hidden space-y-4">
+
+      <!-- Action Bar -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-3 flex flex-wrap items-center justify-between gap-2 no-print">
+        <div class="text-xs text-slate-600 font-medium">
+          💡 <strong>Tip:</strong> Tap directly on any heading, name, or date on the bill paper below to edit it live!
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="button" onclick="switchTab('edit')" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold px-3 py-2 rounded-lg">
+            ← Edit Items
+          </button>
+          <button type="button" onclick="shareOnWhatsApp()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3.5 py-2 rounded-lg shadow flex items-center gap-1">
+            <span>📲 WhatsApp Bill</span>
+          </button>
+          <button type="button" onclick="window.print()" class="bg-blue-800 hover:bg-blue-900 text-white text-xs font-bold px-4 py-2 rounded-lg shadow flex items-center gap-1">
+            <span>🖨️ Print / Save PDF</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- PRINTABLE A4 INVOICE PAPER -->
+      <div id="printableArea" class="bg-white rounded-xl shadow-md border border-slate-200 p-6 sm:p-8 max-w-3xl mx-auto">
+
+        <!-- Invoice Header -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b-2 border-slate-800 pb-4 gap-4">
+          <div class="flex items-start gap-3">
+            <div id="prevBizLogo" contenteditable="true" onblur="syncPreviewToState()" class="editable-field w-14 h-14 rounded-xl bg-blue-900 text-white font-extrabold text-lg flex items-center justify-center shrink-0">
+              RD&
+            </div>
+            <div>
+              <h2 id="prevBizName" contenteditable="true" onblur="syncPreviewToState()" class="editable-field text-xl font-extrabold text-slate-900 leading-tight">
+                Rehan Digital & Trading
+              </h2>
+              <p id="prevBizAddress" contenteditable="true" onblur="syncPreviewToState()" class="editable-field text-xs text-slate-600 mt-0.5">
+                +91 98000 00000 • West Bengal, India
+              </p>
+              <p id="prevBizGstinLine" class="text-xs font-bold text-slate-700 mt-1 hidden">
+                GSTIN: <span id="prevBizGstin"></span>
+              </p>
+            </div>
+          </div>
+
+          <div class=" sm:text-right">
+            <div id="prevDocTitle" contenteditable="true" onblur="syncPreviewToState()" class="editable-field inline-block bg-slate-900 text-white text-xs font-extrabold px-3 py-1 rounded uppercase tracking-wider">
+              TAX INVOICE
+            </div>
+            <div class="mt-2 text-sm font-bold text-slate-800">
+              #<span id="prevInvNumber" contenteditable="true" onblur="syncPreviewToState()" class="editable-field">INV-101</span>
+            </div>
+            <div class="text-xs text-slate-500">
+              Date: <span id="prevInvDate" contenteditable="true" onblur="syncPreviewToState()" class="editable-field">26/10/2026</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bill To Section -->
+        <div class="py-4 border-b border-slate-200 flex flex-col sm:flex-row justify-between gap-2 text-xs">
+          <div>
+            <span class="font-bold text-slate-400 uppercase tracking-wider block">Billed To:</span>
+            <div id="prevCustName" contenteditable="true" onblur="syncPreviewToState()" class="editable-field text-sm font-bold text-slate-800 mt-0.5">
+              Walk-in Customer
+            </div>
+            <div id="prevCustPhone" class="text-slate-600"></div>
+            <div id="prevCustAddress" class="text-slate-600"></div>
+          </div>
+        </div>
+
+        <!-- Invoice Items Table (With Unit Price) -->
+        <div class="mt-4 overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b-2 border-slate-800 text-xs font-extrabold text-slate-700 uppercase bg-slate-50">
+                <th class="py-2.5 px-2">#</th>
+                <th class="py-2.5 px-2">Item / Service Description</th>
+                <th class="py-2.5 px-2 text-center">Qty</th>
+                <th class="py-2.5 px-2 text-right">Unit Price</th>
+                <th class="py-2.5 px-2 text-right">GST</th>
+                <th class="py-2.5 px-2 text-right">Amount</th>
+              </tr>
+            </thead>
+            <tbody id="previewTableBody" class="divide-y divide-slate-200 text-xs sm:text-sm">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Totals & QR Footer -->
+        <div class="mt-6 pt-4 border-t-2 border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
+          <!-- Customer UPI QR Box -->
+          <div class="flex items-center gap-3 bg-slate-50 p-3 rounded-lg border border-slate-200">
+            <img id="custUpiQrImg" src="" alt="UPI QR" class="w-20 h-20 rounded bg-white p-1 border border-slate-200 hidden" />
+            <div class="text-xs">
+              <div class="font-bold text-slate-800">Scan & Pay via Any UPI App</div>
+              <div id="prevUpiIdText" class="text-slate-600 mt-0.5">Add your UPI ID in Tab 1 to display QR</div>
+              <div class="text-[11px] text-slate-400 mt-1">Thank you for your business!</div>
+            </div>
+          </div>
+
+          <!-- Calculation Summary -->
+          <div class="space-y-1.5 text-xs sm:text-sm">
+            <div class="flex justify-between text-slate-600">
+              <span>Taxable Subtotal:</span>
+              <span id="prevSubtotal" class="font-semibold">₹0.00</span>
+            </div>
+            <div class="flex justify-between text-slate-600">
+              <span>CGST (50% of GST):</span>
+              <span id="prevCgst" class="font-semibold">₹0.00</span>
+            </div>
+            <div class="flex justify-between text-slate-600">
+              <span>SGST (50% of GST):</span>
+              <span id="prevSgst" class="font-semibold">₹0.00</span>
+            </div>
+            <div class="flex justify-between text-base sm:text-lg font-extrabold text-slate-900 border-t border-slate-300 pt-2">
+              <span>Grand Total:</span>
+              <span id="prevGrandTotal">₹0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Free Tier Watermark Footer -->
+        <div id="invoiceWatermark" class="mt-8 pt-3 border-t border-dashed border-slate-200 text-center text-[11px] text-slate-400 font-medium">
+          Created with <strong>GST Invoice, Quotation & Bill Maker</strong> • Unlock Pro (₹299) to remove watermark
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 3: SAVED BILLS HISTORY ================= -->
+    <section id="tabHistory" class="hidden space-y-4">
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div>
+            <h2 class="font-bold text-slate-800 text-sm sm:text-base">🗂️ Saved Invoices & Bills</h2>
+            <p class="text-xs text-slate-500">Stored safely offline on your device.</p>
+          </div>
+          <button type="button" onclick="exportSavedBillsCsv()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3.5 py-2 rounded-lg shadow">
+            📊 Export Excel CSV
+          </button>
+        </div>
+        <div id="savedBillsContainer" class="space-y-2 text-xs sm:text-sm"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= PRO UNLOCK & AUTOMATIC UPI PASS KEY MODAL ================= -->
+  <div id="proModal" class="fixed inset-0 bg-slate-900/75 z-50 hidden items-center justify-center p-3 overflow-y-auto no-print">
+    <div class="bg-white rounded-2xl max-w-md w-full p-5 shadow-2xl border border-slate-200 my-8">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+        <div>
+          <span class="bg-amber-400 text-blue-950 text-[10px] font-extrabold px-2 py-0.5 rounded uppercase">Lifetime Pro Edition</span>
+          <h3 class="text-lg font-extrabold text-slate-900 mt-0.5">Unlock GST Invoice Pro (₹299)</h3>
+        </div>
+        <button type="button" onclick="closeProModal()" class="text-slate-400 hover:text-slate-700 text-xl font-bold px-2">✕</button>
+      </div>
+
+      <div class="mt-3 space-y-3 text-xs text-slate-600">
+        <ul class="space-y-1 bg-slate-50 p-3 rounded-lg border border-slate-200 font-medium text-slate-700">
+          <li>✅ Remove "Created with GST Invoice Maker" watermark from PDFs & WhatsApp</li>
+          <li>✅ Unlimited Saved Invoices & 1-Click Excel CSV Tax Report</li>
+          <li>✅ Custom Business GSTIN & Automatic UPI Payment QR on Every Bill</li>
+        </ul>
+
+        <!-- STEP 1: DIRECT UPI PAYMENT TO parveenfaruque@ybl -->
+        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3.5">
+          <div class="font-extrabold text-emerald-950 text-xs uppercase tracking-wider mb-1">
+            Step 1: Pay ₹299 Instantly via UPI
+          </div>
+          <p class="text-[11px] text-emerald-800 mb-2.5">
+            Tap the button below to pay <strong>₹299</strong> directly via Google Pay, PhonePe, Paytm, or BHIM to <strong>parveenfaruque@ybl</strong>:
+          </p>
+
+          <a href="upi://pay?pa=parveenfaruque@ybl&pn=Rehan%20Digital%20And%20Trading&am=299.00&cu=INR&tn=GST%20Invoice%20Pro%20Unlock"
+             class="block w-full text-center bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm py-2.5 px-4 rounded-lg shadow transition">
+            Open UPI App & Pay ₹299 Now →
+          </a>
+
+          <div class="mt-3 flex items-center gap-3 bg-white p-2 rounded-lg border border-emerald-200">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=upi%3A%2F%2Fpay%3Fpa%3Dparveenfaruque%40ybl%26pn%3DRehan%2520Digital%26am%3D299.00%26cu%3DINR"
+                 alt="Pay ₹299 QR" class="w-16 h-16 rounded border border-slate-200 shrink-0" />
+            <div class="text-[11px] text-slate-600 leading-snug">
+              <div><strong>UPI ID:</strong> <span class="font-mono font-bold text-slate-900">parveenfaruque@ybl</span></div>
+              <div class="mt-0.5 text-slate-500">On laptop? Scan this QR with any UPI app to pay ₹299.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: AUTOMATIC PASS KEY VERIFICATION VIA 12-DIGIT UTR -->
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-3.5 space-y-2">
+          <div class="font-extrabold text-blue-950 text-xs uppercase tracking-wider">
+            Step 2: Instant Automatic Pass Key
+          </div>
+          <p class="text-[11px] text-blue-800">
+            After paying ₹299, enter your Shop Name and the <strong>12-digit UPI Ref / UTR Number</strong> from your payment screen to automatically generate your Pass Key & unlock Pro immediately:
+          </p>
+          <input type="text" id="utrBizNameInput" placeholder="Your Shop / Business Name" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs bg-white font-medium" />
+          <input type="text" id="utrNumberInput" maxlength="12" placeholder="12-Digit UPI Ref / UTR No. (e.g. 412589632147)" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs bg-white font-mono font-bold" />
+          <button type="button" onclick="verifyUtrAndAutoUnlock()" class="w-full bg-blue-800 hover:bg-blue-900 text-white font-extrabold text-xs py-2.5 rounded-lg shadow transition">
+            Verify UPI Ref & Get Automatic Pass Key
+          </button>
+          <div id="autoKeyResultBox" class="hidden bg-emerald-100 border border-emerald-400 text-emerald-950 p-2.5 rounded-lg text-center font-bold text-xs"></div>
+        </div>
+
+        <!-- ALREADY HAVE A KEY? -->
+        <div class="pt-2 border-t border-slate-200">
+          <label class="block text-[11px] font-bold text-slate-600 mb-1">Already have a Pro Pass Key?</label>
+          <div class="flex gap-2">
+            <input type="text" id="manualKeyInput" placeholder="GSTPRO-XXXX-XXXX" class="flex-1 border border-slate-300 rounded-lg px-3 py-1.5 text-xs uppercase font-mono font-bold" />
+            <button type="button" onclick="activateManualKey()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs px-3.5 py-1.5 rounded-lg">
+              Activate
+            </button>
+          </div>
+        </div>
+
+        <!-- SELLER ADMIN GENERATOR (COLLAPSIBLE) -->
+        <div class="pt-2 border-t border-slate-100 text-right">
+          <button type="button" onclick="toggleSellerTool()" class="text-[11px] text-slate-400 hover:text-slate-600 underline">
+            Open Seller Tool
+          </button>
+          <div id="sellerToolBox" class="hidden mt-2 bg-slate-100 p-3 rounded-lg text-left space-y-2">
+            <div class="text-[11px] font-bold text-slate-700">Seller Key Generator (For Customer Support)</div>
+            <div class="flex gap-2">
+              <input type="text" id="sellerCustomerInput" placeholder="Customer Name or Phone" class="flex-1 border border-slate-300 rounded px-2 py-1 text-xs bg-white" />
+              <button type="button" onclick="generateSellerKey()" class="bg-blue-700 text-white text-xs font-bold px-3 py-1 rounded">
+                Generate Key
+              </button>
+            </div>
+            <div id="sellerKeyOutput" class="font-mono font-extrabold text-xs text-blue-900"></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Sticky Bottom Bar for One-Handed Mobile Use -->
-  <div class="bottom-bar">
-    <div class="bottom-bar-inner">
-      <button class="btn-fab-add" onclick="openFormSheet()">+ Add New Bill</button>
-      <button class="btn-fab-samples" onclick="loadSamples()">Load Samples</button>
-    </div>
-  </div>
-
-  <!-- Slide-Up Bottom Sheet Modal for Adding or Editing an Expense / Bill -->
-  <div class="sheet-backdrop" id="sheetBackdrop" onclick="handleBackdropClick(event)">
-    <div class="form-box" id="formBox">
-      <div class="sheet-handle"></div>
-      <div class="sheet-header">
-        <span class="sheet-title" id="sheetTitle">Add Expense or Bill</span>
-        <button class="btn-cancel-edit" id="cancelEditBtn" onclick="cancelEdit()">Cancel</button>
-      </div>
-
-      <div class="edit-banner">
-        <span id="editBannerText">Editing bill...</span>
-      </div>
-
-      <!-- 1-Tap Popular Presets Covering Living Costs + Subscriptions -->
-      <span class="preset-label">Quick 1-Tap Fill:</span>
-      <div class="preset-row">
-        <button type="button" class="preset-chip" onclick="fillPreset('House Rent', 0, 'Rent', 'monthly')">House Rent</button>
-        <button type="button" class="preset-chip" onclick="fillPreset('Weekly Groceries', 1, 'Groceries', 'weekly')">Groceries</button>
-        <button type="button" class="preset-chip" onclick="fillPreset('Fuel / Commute Pass', 2, 'Transport', 'monthly')">Transport</button>
-        <button type="button" class="preset-chip" onclick="fillPreset('Home Wi-Fi', 3, 'Utilities', 'monthly')">Home Wi-Fi</button>
-        <button type="button" class="preset-chip" onclick="fillPreset('Netflix', 4, 'Entertainment', 'monthly')">Netflix</button>
-        <button type="button" class="preset-chip" onclick="fillPreset('Amazon Prime', 1, 'Entertainment', 'yearly')">Prime</button>
-        <button type="button" class="preset-chip" onclick="fillPreset('Spotify / Music', 4, 'Entertainment', 'monthly')">Music</button>
-        <button type="button" class="preset-chip" onclick="fillPreset('Gym Membership', 5, 'Fitness', 'monthly')">Gym</button>
-      </div>
-
-      <div class="input-row">
-        <div class="field-group full-width">
-          <label class="field-label" for="subName">Expense or Bill Name</label>
-          <input type="text" id="subName" placeholder="e.g., House Rent, Groceries, Metro Pass, Netflix" />
-        </div>
-        <div class="field-group">
-          <label class="field-label" for="subCost">Total Amount</label>
-          <input type="number" id="subCost" placeholder="Total Bill" min="0.01" step="any" />
-        </div>
-        <div class="field-group">
-          <label class="field-label" for="subRenewalDay">Due / Renewal Day (1-31)</label>
-          <input type="number" id="subRenewalDay" placeholder="Optional (1-31)" min="1" max="31" />
-        </div>
-        <div class="field-group">
-          <label class="field-label" for="subCycle">Frequency</label>
-          <select id="subCycle">
-            <option value="monthly">Monthly</option>
-            <option value="weekly">Weekly</option>
-            <option value="yearly">Yearly</option>
-          </select>
-        </div>
-        <div class="field-group">
-          <label class="field-label" for="subCategory">Category</label>
-          <select id="subCategory">
-            <option value="Rent">Rent &amp; Housing</option>
-            <option value="Groceries">Groceries &amp; Food</option>
-            <option value="Transport">Transportation &amp; Fuel</option>
-            <option value="Utilities">Utilities &amp; Wi-Fi</option>
-            <option value="Entertainment">Entertainment</option>
-            <option value="Fitness">Health &amp; Fitness</option>
-            <option value="Software">Work &amp; Cloud</option>
-            <option value="Education">Education &amp; EMIs</option>
-          </select>
-        </div>
-        <div class="field-group full-width">
-          <label class="field-label" for="subSplit">Split Cost With Family / Roommates</label>
-          <select id="subSplit" title="Split this bill among multiple people">
-            <option value="1">Just Me (1 person)</option>
-            <option value="2">Split by 2 people</option>
-            <option value="3">Split by 3 people</option>
-            <option value="4">Split by 4 people</option>
-            <option value="5">Split by 5 people</option>
-            <option value="6">Split by 6 people</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="sheet-actions">
-        <button class="btn-primary" id="submitBtn" onclick="saveOrAddSubscription()">+ Add Bill</button>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- Built-In User Guide & Share Sheet -->
-  <div class="sheet-backdrop" id="guideBackdrop" onclick="handleGuideBackdrop(event)">
-    <div class="form-box">
-      <div class="sheet-handle"></div>
-      <div class="sheet-header">
-        <span class="sheet-title">How to Use BillAudit</span>
-        <button class="btn-cancel-edit" style="display:inline-block; height:36px;" onclick="closeGuideSheet()">Close</button>
-      </div>
-      <div class="guide-step">
-        <span class="guide-num">1</span>
-        <div><strong>Pick Your Currency:</strong> Tap the currency menu at the top (INR, USD, EUR, BDT, GBP, JPY) to track bills in your local money.</div>
-      </div>
-      <div class="guide-step">
-        <span class="guide-num">2</span>
-        <div><strong>Add Living Costs &amp; Subscriptions:</strong> Tap <strong>+ Add New Bill</strong> at the bottom to log Rent, Groceries, Transport, Utilities, or Subscriptions—and use <strong>Split Cost</strong> to divide shared family or roommate bills automatically.</div>
-      </div>
-      <div class="guide-step">
-        <span class="guide-num">3</span>
-        <div><strong>Audit &amp; Test Your Savings:</strong> Tap <strong>Flag to Cut</strong> on any unused subscription to cross it out and see how much money you save over a full year in the green <strong>Annual Saved</strong> card.</div>
-      </div>
-      <div class="guide-step">
-        <span class="guide-num">4</span>
-        <div><strong>Install on Your Phone &amp; Back Up:</strong> In your phone browser menu, tap <strong>Add to Home Screen / Install App</strong> for 100% offline full-screen access, and use <strong>Backup &amp; Tools</strong> to save or export your data anytime.</div>
-      </div>
-      <div class="sheet-actions">
-        <button class="btn-primary" onclick="shareApp()">Share App with Friends</button>
-      </div>
-    </div>
-  </div>
-
+  <!-- ================= APPLICATION JAVASCRIPT ================= -->
   <script>
-    const TIMES_SYMBOL = '\u00D7';
-    const DIVIDE_SYMBOL = '\u00F7';
-    const STORAGE_KEY = 'sub_audit_tracker_v2_data';
-    const CURRENCY_KEY = 'sub_audit_tracker_currency';
-    const BUDGET_KEY = 'sub_audit_tracker_budget';
-    const THEME_KEY = 'sub_audit_tracker_dark';
+    // 100 Built-In Services, Food & Products Catalog
+    const BUILTIN_CATALOG = [
+      // Grocery & Kirana (25)
+      { cat: 'Grocery', name: 'Basmati Rice (Premium)', unit: 'kg', price: 110, gst: 5 },
+      { cat: 'Grocery', name: 'Miniket Rice', unit: 'kg', price: 58, gst: 0 },
+      { cat: 'Grocery', name: 'Chakki Fresh Atta', unit: 'kg', price: 46, gst: 5 },
+      { cat: 'Grocery', name: 'Maida (Refined Flour)', unit: 'kg', price: 44, gst: 0 },
+      { cat: 'Grocery', name: 'Mustard Oil (Kachi Ghani)', unit: 'ltr', price: 165, gst: 5 },
+      { cat: 'Grocery', name: 'Refined Sunflower Oil', unit: 'ltr', price: 140, gst: 5 },
+      { cat: 'Grocery', name: 'Toor / Arhar Dal', unit: 'kg', price: 145, gst: 0 },
+      { cat: 'Grocery', name: 'Masoor Dal', unit: 'kg', price: 98, gst: 0 },
+      { cat: 'Grocery', name: 'Moong Dal', unit: 'kg', price: 115, gst: 0 },
+      { cat: 'Grocery', name: 'Chana Dal', unit: 'kg', price: 88, gst: 0 },
+      { cat: 'Grocery', name: 'Sugar (Refined)', unit: 'kg', price: 45, gst: 5 },
+      { cat: 'Grocery', name: 'Iodized Salt Packet', unit: 'pkt', price: 28, gst: 0 },
+      { cat: 'Grocery', name: 'Assam CTC Tea Leaf', unit: 'gm', price: 120, gst: 5 },
+      { cat: 'Grocery', name: 'Pure Cow Ghee', unit: 'ltr', price: 620, gst: 12 },
+      { cat: 'Grocery', name: 'Fresh Paneer', unit: 'gm', price: 95, gst: 5 },
+      { cat: 'Grocery', name: 'Amul Butter (100g)', unit: 'pkt', price: 58, gst: 12 },
+      { cat: 'Grocery', name: 'Turmeric Powder (Haldi)', unit: 'pkt', price: 45, gst: 5 },
+      { cat: 'Grocery', name: 'Red Chilli Powder', unit: 'pkt', price: 55, gst: 5 },
+      { cat: 'Grocery', name: 'Cumin Powder (Jeera)', unit: 'pkt', price: 65, gst: 5 },
+      { cat: 'Grocery', name: 'Garam Masala Packet', unit: 'pkt', price: 50, gst: 5 },
+      { cat: 'Grocery', name: 'Biscuit Family Pack', unit: 'pkt', price: 35, gst: 18 },
+      { cat: 'Grocery', name: 'Instant Noodles Pack', unit: 'pkt', price: 14, gst: 18 },
+      { cat: 'Grocery', name: 'Detergent Washing Powder', unit: 'kg', price: 130, gst: 18 },
+      { cat: 'Grocery', name: 'Bath Soap Bar', unit: 'pcs', price: 38, gst: 18 },
+      { cat: 'Grocery', name: 'Dishwash Liquid Gel', unit: 'ltr', price: 115, gst: 18 },
 
-    // Samples index: [0: Rent, 1: Weekly Groceries, 2: Transport, 3: Utilities/Wi-Fi, 4: Netflix, 5: Gym]
-    const CURRENCIES = {
-      INR: { symbol: '\u20B9', code: 'INR', locale: 'en-IN', defaultBudget: 18000, samples: [12000, 1200, 2000, 1199, 649, 1200] },
-      USD: { symbol: '$',      code: 'USD', locale: 'en-US', defaultBudget: 2200,  samples: [1600, 95, 160, 85, 22.99, 45] },
-      EUR: { symbol: '\u20AC', code: 'EUR', locale: 'en-IE', defaultBudget: 1800,  samples: [1200, 80, 120, 75, 19.99, 40] },
-      BDT: { symbol: '\u09F3', code: 'BDT', locale: 'en-IN', defaultBudget: 25000, samples: [15000, 1500, 2500, 1200, 800, 1500] },
-      GBP: { symbol: '\u00A3', code: 'GBP', locale: 'en-GB', defaultBudget: 1700,  samples: [1200, 70, 110, 65, 17.99, 38] },
-      JPY: { symbol: '\u00A5', code: 'JPY', locale: 'ja-JP', defaultBudget: 180000, samples: [95000, 8500, 15000, 6500, 1980, 6000] }
-    };
+      // Food & Bakery (20)
+      { cat: 'Food', name: 'Chicken Biryani (Full Plate)', unit: 'plate', price: 180, gst: 5 },
+      { cat: 'Food', name: 'Mutton Biryani (Special)', unit: 'plate', price: 260, gst: 5 },
+      { cat: 'Food', name: 'Egg Chicken Roll', unit: 'pcs', price: 80, gst: 5 },
+      { cat: 'Food', name: 'Paneer Butter Masala', unit: 'plate', price: 160, gst: 5 },
+      { cat: 'Food', name: 'Chicken Kosha (4 pcs)', unit: 'plate', price: 170, gst: 5 },
+      { cat: 'Food', name: 'Mixed Hakka Chowmein', unit: 'plate', price: 130, gst: 5 },
+      { cat: 'Food', name: 'Chilli Chicken (8 pcs)', unit: 'plate', price: 160, gst: 5 },
+      { cat: 'Food', name: 'Butter Naan / Tandoori Roti', unit: 'pcs', price: 35, gst: 5 },
+      { cat: 'Food', name: 'Masala Dosa with Sambhar', unit: 'plate', price: 90, gst: 5 },
+      { cat: 'Food', name: 'Steamed Chicken Momo', unit: 'plate', price: 80, gst: 5 },
+      { cat: 'Food', name: 'Veg Thali / Meal Package', unit: 'plate', price: 110, gst: 5 },
+      { cat: 'Food', name: 'Fish Thali (Katla / Rohu)', unit: 'plate', price: 160, gst: 5 },
+      { cat: 'Food', name: 'Black Forest Birthday Cake', unit: 'kg', price: 550, gst: 18 },
+      { cat: 'Food', name: 'Chocolate Pastry', unit: 'pcs', price: 55, gst: 18 },
+      { cat: 'Food', name: 'Baked Rosogolla', unit: 'pcs', price: 20, gst: 5 },
+      { cat: 'Food', name: 'Sandesh / Kaju Barfi', unit: 'kg', price: 480, gst: 5 },
+      { cat: 'Food', name: 'Mishti Doi (Sweet Curd)', unit: 'kg', price: 180, gst: 5 },
+      { cat: 'Food', name: 'Singara / Samosa (Hot)', unit: 'pcs', price: 10, gst: 5 },
+      { cat: 'Food', name: 'Mineral Water Bottle (1L)', unit: 'pcs', price: 20, gst: 18 },
+      { cat: 'Food', name: 'Cold Drink Bottle (750ml)', unit: 'pcs', price: 45, gst: 28 },
 
-    const CATEGORY_META = [
-      { key: 'Rent',          label: 'Rent & Housing', color: 'var(--cat-rent)', short: 'RN' },
-      { key: 'Groceries',     label: 'Groceries',      color: 'var(--cat-groc)', short: 'GR' },
-      { key: 'Transport',     label: 'Transport',      color: 'var(--cat-tran)', short: 'TR' },
-      { key: 'Utilities',     label: 'Utilities',      color: 'var(--cat-util)', short: 'UT' },
-      { key: 'Entertainment', label: 'Entertainment',  color: 'var(--cat-ent)',  short: 'EN' },
-      { key: 'Fitness',       label: 'Health/Fitness', color: 'var(--cat-fit)',  short: 'FT' },
-      { key: 'Software',      label: 'Work/Cloud',     color: 'var(--cat-soft)', short: 'WK' },
-      { key: 'Education',     label: 'Education/EMI',  color: 'var(--cat-edu)',  short: 'ED' }
+      // Repair & Services (20)
+      { cat: 'Services', name: 'AC Servicing & Jet Wash', unit: 'service', price: 599, gst: 18 },
+      { cat: 'Services', name: 'AC Gas Refilling (Full)', unit: 'service', price: 2200, gst: 18 },
+      { cat: 'Services', name: 'Refrigerator Repair Service', unit: 'service', price: 450, gst: 18 },
+      { cat: 'Services', name: 'Washing Machine Repair', unit: 'service', price: 500, gst: 18 },
+      { cat: 'Services', name: 'RO Water Purifier Filter Change', unit: 'service', price: 850, gst: 18 },
+      { cat: 'Services', name: 'Mobile Screen Replacement', unit: 'pcs', price: 1600, gst: 18 },
+      { cat: 'Services', name: 'Mobile Battery Replacement', unit: 'pcs', price: 850, gst: 18 },
+      { cat: 'Services', name: 'Laptop Formatting & OS Setup', unit: 'service', price: 600, gst: 18 },
+      { cat: 'Services', name: 'CCTV Camera Installation', unit: 'service', price: 1500, gst: 18 },
+      { cat: 'Services', name: 'Electrical Wiring & Point Work', unit: 'service', price: 400, gst: 18 },
+      { cat: 'Services', name: 'Plumbing & Tap Leakage Repair', unit: 'service', price: 350, gst: 18 },
+      { cat: 'Services', name: 'Carpentry & Door Lock Fitting', unit: 'service', price: 450, gst: 18 },
+      { cat: 'Services', name: 'House Painting Labor Charge', unit: 'days', price: 750, gst: 18 },
+      { cat: 'Services', name: 'Bike / Two-Wheeler Servicing', unit: 'service', price: 450, gst: 18 },
+      { cat: 'Services', name: 'Car Wash & Interior Vacuum', unit: 'service', price: 500, gst: 18 },
+      { cat: 'Services', name: 'Tailoring - Suit / Blouse Stitching', unit: 'pcs', price: 650, gst: 5 },
+      { cat: 'Services', name: 'Men Haircut & Beard Grooming', unit: 'service', price: 180, gst: 18 },
+      { cat: 'Services', name: 'Bridal Makeup & Hair Styling', unit: 'service', price: 6500, gst: 18 },
+      { cat: 'Services', name: 'Dry Cleaning & Steam Iron', unit: 'pcs', price: 150, gst: 18 },
+      { cat: 'Services', name: 'Local Transport / Delivery Charge', unit: 'service', price: 250, gst: 5 },
+
+      // Digital, Coaching & Freelance (18)
+      { cat: 'Digital', name: 'Website Design & Development', unit: 'service', price: 6500, gst: 18 },
+      { cat: 'Digital', name: 'Landing Page / E-Commerce Setup', unit: 'service', price: 3500, gst: 18 },
+      { cat: 'Digital', name: 'Logo & Brand Banner Design', unit: 'pcs', price: 800, gst: 18 },
+      { cat: 'Digital', name: 'YouTube Video Editing & Thumbnail', unit: 'pcs', price: 1200, gst: 18 },
+      { cat: 'Digital', name: 'Social Media Marketing Package', unit: 'month', price: 4500, gst: 18 },
+      { cat: 'Digital', name: 'Facebook & Google Ads Setup', unit: 'service', price: 2500, gst: 18 },
+      { cat: 'Digital', name: 'SEO Content / Blog Writing', unit: 'pcs', price: 600, gst: 18 },
+      { cat: 'Digital', name: 'Monthly Tuition / Coaching Fee', unit: 'month', price: 1200, gst: 0 },
+      { cat: 'Digital', name: 'Computer Course Training Fee', unit: 'month', price: 1000, gst: 18 },
+      { cat: 'Digital', name: 'GST Return Filing (GSTR-1 & 3B)', unit: 'service', price: 800, gst: 18 },
+      { cat: 'Digital', name: 'Income Tax Return (ITR) Filing', unit: 'service', price: 1000, gst: 18 },
+      { cat: 'Digital', name: 'PAN / Trade License Application', unit: 'service', price: 350, gst: 18 },
+      { cat: 'Digital', name: 'Passport Photo Print (8 Copies)', unit: 'pkt', price: 60, gst: 18 },
+      { cat: 'Digital', name: 'A4 Color Printout & Spiral Binding', unit: 'pcs', price: 80, gst: 18 },
+      { cat: 'Digital', name: 'PVC ID Card Printing', unit: 'pcs', price: 50, gst: 18 },
+      { cat: 'Digital', name: 'Flex Banner Printing', unit: 'mtr', price: 180, gst: 18 },
+      { cat: 'Digital', name: 'Wedding Photography Package', unit: 'service', price: 15000, gst: 18 },
+      { cat: 'Digital', name: 'Android App Setup & Publishing', unit: 'service', price: 5000, gst: 18 },
+
+      // Electronics, Hardware & Retail (17)
+      { cat: 'Retail', name: '9W LED Bulb (2 Year Warranty)', unit: 'pcs', price: 95, gst: 12 },
+      { cat: 'Retail', name: '20W LED Tube Light Batten', unit: 'pcs', price: 220, gst: 12 },
+      { cat: 'Retail', name: 'High Speed Ceiling Fan (48 inch)', unit: 'pcs', price: 1650, gst: 18 },
+      { cat: 'Retail', name: 'Fast USB Type-C Charger (33W)', unit: 'pcs', price: 450, gst: 18 },
+      { cat: 'Retail', name: 'Bluetooth Wireless Earbuds', unit: 'pcs', price: 899, gst: 18 },
+      { cat: 'Retail', name: 'Tempered Glass Screen Guard', unit: 'pcs', price: 120, gst: 18 },
+      { cat: 'Retail', name: 'Wireless Mouse & Keyboard Combo', unit: 'box', price: 950, gst: 18 },
+      { cat: 'Retail', name: '64GB USB Pendrive / Memory Card', unit: 'pcs', price: 480, gst: 18 },
+      { cat: 'Retail', name: 'Cotton Printed Saree', unit: 'pcs', price: 750, gst: 5 },
+      { cat: 'Retail', name: 'Men Cotton Shirt / Kurta', unit: 'pcs', price: 650, gst: 5 },
+      { cat: 'Retail', name: 'Denim Jeans Trouser', unit: 'pcs', price: 950, gst: 12 },
+      { cat: 'Retail', name: 'School Bag / Backpack', unit: 'pcs', price: 550, gst: 18 },
+      { cat: 'Retail', name: 'Plastic Water Tank (500 Litre)', unit: 'pcs', price: 3400, gst: 18 },
+      { cat: 'Retail', name: 'Portland Cement Bag (50 kg)', unit: 'pkt', price: 380, gst: 28 },
+      { cat: 'Retail', name: 'Wall Putty Bag (20 kg)', unit: 'pkt', price: 520, gst: 18 },
+      { cat: 'Retail', name: 'PVC Pipe (10 Feet Length)', unit: 'pcs', price: 240, gst: 18 },
+      { cat: 'Retail', name: 'General Medicine / Pharmacy Strip', unit: 'pkt', price: 120, gst: 12 }
     ];
 
-    function safeGetStorage(key) {
+    let activeCategory = 'ALL';
+
+    // Default App State
+    let appState = {
+      isPro: false,
+      proKey: '',
+      bizLogo: 'RD&',
+      bizName: 'Rehan Digital & Trading',
+      bizAddress: '+91 98000 00000 • West Bengal, India',
+      bizGstin: '',
+      bizUpi: 'parveenfaruque@ybl',
+      docTitle: 'TAX INVOICE',
+      invNumber: 'INV-101',
+      invDate: formatTodayDate(),
+      custName: 'Walk-in Customer',
+      custPhone: '',
+      custAddress: '',
+      items: [
+        { name: 'Website Design & Development', qty: 1, unit: 'service', price: 6500, gst: 18 },
+        { name: 'Basmati Rice (Premium)', qty: 5, unit: 'kg', price: 110, gst: 5 }
+      ],
+      savedBills: []
+    };
+
+    function formatTodayDate() {
+      const d = new Date();
+      const dd = String(d.getDate()).padStart(2, '0');
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const yyyy = d.getFullYear();
+      return dd + '/' + mm + '/' + yyyy;
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function loadState() {
       try {
-        return localStorage.getItem(key);
+        const raw = localStorage.getItem('gst_invoice_maker_state_v3');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          appState = Object.assign({}, appState, parsed);
+        }
       } catch (e) {
-        return null;
+        console.warn('Could not load saved state:', e);
+      }
+
+      // Check URL auto-redirect unlock (?pro_unlock=1)
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('pro_unlock') === '1') {
+        appState.isPro = true;
+        appState.proKey = 'GSTPRO-AUTO-PAID';
+        saveState();
       }
     }
 
-    function safeSetStorage(key, val) {
+    function saveState() {
       try {
-        localStorage.setItem(key, val);
-      } catch (e) {}
-    }
-
-    let subscriptions = [];
-    try {
-      subscriptions = JSON.parse(safeGetStorage(STORAGE_KEY)) || [];
-    } catch (e) {
-      subscriptions = [];
-    }
-
-    let currentCurrency = safeGetStorage(CURRENCY_KEY) || 'INR';
-    if (!CURRENCIES[currentCurrency]) currentCurrency = 'INR';
-
-    let monthlyBudget = parseFloat(safeGetStorage(BUDGET_KEY));
-    if (isNaN(monthlyBudget) || monthlyBudget <= 0) {
-      monthlyBudget = CURRENCIES[currentCurrency].defaultBudget;
-    }
-
-    let isDarkMode = safeGetStorage(THEME_KEY) === 'true';
-    let activeCategory = 'All';
-    let editingBillId = null;
-    let toastTimer = null;
-
-    function showToast(msg) {
-      const el = document.getElementById('toastBanner');
-      if (!el) return;
-      el.textContent = msg;
-      el.classList.add('show');
-      if (toastTimer) clearTimeout(toastTimer);
-      toastTimer = setTimeout(function() {
-        el.classList.remove('show');
-      }, 2400);
-    }
-
-    function switchTab(tabName) {
-      const tabs = {
-        bills: { btn: 'tabBtnBills', panel: 'panelBills' },
-        insights: { btn: 'tabBtnInsights', panel: 'panelInsights' },
-        tools: { btn: 'tabBtnTools', panel: 'panelTools' }
-      };
-      Object.keys(tabs).forEach(function(k) {
-        const isTarget = k === tabName;
-        document.getElementById(tabs[k].btn).classList.toggle('active', isTarget);
-        document.getElementById(tabs[k].panel).classList.toggle('active', isTarget);
-      });
-    }
-
-    function openGuideSheet() {
-      document.getElementById('guideBackdrop').classList.add('open');
-    }
-
-    function closeGuideSheet() {
-      document.getElementById('guideBackdrop').classList.remove('open');
-    }
-
-    function handleGuideBackdrop(e) {
-      if (e.target && e.target.id === 'guideBackdrop') {
-        closeGuideSheet();
+        localStorage.setItem('gst_invoice_maker_state_v3', JSON.stringify(appState));
+      } catch (e) {
+        console.warn('Could not save state:', e);
       }
     }
 
-    function shareApp() {
-      const shareUrl = window.location.href.startsWith('http')
-        ? window.location.href
-        : 'https://faruquerehan120-orhan.github.io/';
-      const shareText = 'Track monthly rent, groceries, transport & subscriptions—and see how much you save per year with BillAudit (100% free & private): ' + shareUrl;
-      if (navigator.share) {
-        navigator.share({
-          title: 'BillAudit • Expense & Subscription Tracker',
-          text: shareText,
-          url: shareUrl
-        }).catch(function() {});
-      } else {
-        const tempInput = document.createElement('textarea');
-        tempInput.value = shareText;
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        try {
-          document.execCommand('copy');
-          showToast('App invite link copied to clipboard!');
-        } catch (err) {
-          showToast('Share link: ' + shareUrl);
-        }
-        document.body.removeChild(tempInput);
-      }
+    function populateFormFromState() {
+      document.getElementById('bizLogoInput').value = appState.bizLogo || '';
+      document.getElementById('bizNameInput').value = appState.bizName || '';
+      document.getElementById('bizAddressInput').value = appState.bizAddress || '';
+      document.getElementById('bizGstinInput').value = appState.bizGstin || '';
+      document.getElementById('bizUpiInput').value = appState.bizUpi || '';
+      document.getElementById('docTitleInput').value = appState.docTitle || 'TAX INVOICE';
+      document.getElementById('invNumberInput').value = appState.invNumber || 'INV-101';
+      document.getElementById('invDateInput').value = appState.invDate || formatTodayDate();
+      document.getElementById('custNameInput').value = appState.custName || '';
+      document.getElementById('custPhoneInput').value = appState.custPhone || '';
+      document.getElementById('custAddressInput').value = appState.custAddress || '';
     }
 
-    function openFormSheet() {
-      document.getElementById('sheetBackdrop').classList.add('open');
-      setTimeout(function() {
-        document.getElementById('subName').focus();
-      }, 80);
+    function syncFormToState() {
+      appState.bizLogo = document.getElementById('bizLogoInput').value;
+      appState.bizName = document.getElementById('bizNameInput').value;
+      appState.bizAddress = document.getElementById('bizAddressInput').value;
+      appState.bizGstin = document.getElementById('bizGstinInput').value.trim().toUpperCase();
+      appState.bizUpi = document.getElementById('bizUpiInput').value.trim();
+      appState.docTitle = document.getElementById('docTitleInput').value;
+      appState.invNumber = document.getElementById('invNumberInput').value;
+      appState.invDate = document.getElementById('invDateInput').value;
+      appState.custName = document.getElementById('custNameInput').value;
+      appState.custPhone = document.getElementById('custPhoneInput').value;
+      appState.custAddress = document.getElementById('custAddressInput').value;
+      saveState();
+      renderAll();
     }
 
-    function closeFormSheet() {
-      document.getElementById('sheetBackdrop').classList.remove('open');
+    function syncPreviewToState() {
+      appState.bizLogo = document.getElementById('prevBizLogo').innerText.trim();
+      appState.bizName = document.getElementById('prevBizName').innerText.trim();
+      appState.bizAddress = document.getElementById('prevBizAddress').innerText.trim();
+      appState.docTitle = document.getElementById('prevDocTitle').innerText.trim();
+      appState.invNumber = document.getElementById('prevInvNumber').innerText.trim();
+      appState.invDate = document.getElementById('prevInvDate').innerText.trim();
+      appState.custName = document.getElementById('prevCustName').innerText.trim();
+      populateFormFromState();
+      saveState();
+      renderAll();
     }
 
-    function handleBackdropClick(e) {
-      if (e.target && e.target.id === 'sheetBackdrop') {
-        cancelEdit();
-      }
+    function clearBusinessHeader() {
+      appState.bizLogo = 'BIZ';
+      appState.bizName = 'Your Business / Shop Name';
+      appState.bizAddress = 'Phone • City, State';
+      appState.bizGstin = '';
+      populateFormFromState();
+      saveState();
+      renderAll();
     }
 
-    function fillPreset(name, sampleIdx, category, cycle) {
-      const s = CURRENCIES[currentCurrency].samples;
-      document.getElementById('subName').value = name;
-      document.getElementById('subCost').value = s[sampleIdx] || s[0];
-      document.getElementById('subCategory').value = category;
-      document.getElementById('subCycle').value = cycle || 'monthly';
-      document.getElementById('subCost').focus();
-    }
-
-    function formatMoney(amount) {
-      const cur = CURRENCIES[currentCurrency];
-      const hasDecimals = (cur.code === 'USD' || cur.code === 'EUR' || cur.code === 'GBP') && (Math.round(amount * 100) % 100 !== 0);
-      const formattedNum = hasDecimals
-        ? amount.toLocaleString(cur.locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-        : Math.round(amount).toLocaleString(cur.locale);
-      return cur.symbol + formattedNum;
-    }
-
-    function saveToBrowser() {
-      safeSetStorage(STORAGE_KEY, JSON.stringify(subscriptions));
-      safeSetStorage(CURRENCY_KEY, currentCurrency);
-      safeSetStorage(BUDGET_KEY, String(monthlyBudget));
-      safeSetStorage(THEME_KEY, String(isDarkMode));
-    }
-
-    function changeCurrency(newCode) {
-      if (!CURRENCIES[newCode]) return;
-      const oldDefault = CURRENCIES[currentCurrency].defaultBudget;
-      currentCurrency = newCode;
-      if (monthlyBudget === oldDefault) {
-        monthlyBudget = CURRENCIES[currentCurrency].defaultBudget;
-      }
-      document.getElementById('budgetLimitInput').value = monthlyBudget;
-      saveToBrowser();
-      renderApp();
-      showToast('Currency set to ' + newCode);
-    }
-
-    function updateBudgetLimit(val) {
-      const parsed = parseFloat(val);
-      if (!isNaN(parsed) && parsed > 0) {
-        monthlyBudget = parsed;
-        saveToBrowser();
-        renderApp();
-      }
-    }
-
-    function toggleDarkMode() {
-      isDarkMode = !isDarkMode;
-      applyTheme();
-      saveToBrowser();
-    }
-
-    function applyTheme() {
-      document.body.classList.toggle('dark-mode', isDarkMode);
-      const themeBtn = document.getElementById('themeBtn');
-      if (themeBtn) {
-        themeBtn.textContent = isDarkMode ? 'Light Mode' : 'Dark Mode';
-      }
-    }
-
-    function getFullMonthlyEquivalent(amount, cycle) {
-      if (cycle === 'yearly') return amount / 12;
-      if (cycle === 'weekly') return (amount * 52) / 12;
-      return amount;
-    }
-
-    function getPersonalMonthlyShare(item) {
-      const fullMonthly = getFullMonthlyEquivalent(item.amount, item.cycle);
-      const splitCount = (item.splitCount && item.splitCount > 1) ? item.splitCount : 1;
-      return fullMonthly / splitCount;
-    }
-
-    function getDaysUntilRenewal(renewalDay) {
-      if (!renewalDay || renewalDay < 1 || renewalDay > 31) return null;
-      const today = new Date();
-      const currentDay = today.getDate();
-      if (renewalDay >= currentDay) return renewalDay - currentDay;
-      const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
-      return (daysInMonth - currentDay) + renewalDay;
-    }
-
-    function startEdit(id) {
-      const target = subscriptions.find(function(item) { return item.id === id; });
-      if (!target) return;
-
-      editingBillId = id;
-      document.getElementById('subName').value = target.name;
-      document.getElementById('subCost').value = target.amount;
-      document.getElementById('subRenewalDay').value = target.renewalDay || '';
-      document.getElementById('subCycle').value = target.cycle;
-      document.getElementById('subCategory').value = target.category;
-      document.getElementById('subSplit').value = String(target.splitCount || 1);
-
-      document.getElementById('formBox').classList.add('editing');
-      document.getElementById('sheetTitle').textContent = 'Edit Expense / Bill';
-      document.getElementById('editBannerText').textContent = 'Editing: ' + target.name;
-      document.getElementById('submitBtn').textContent = 'Save Changes';
-      openFormSheet();
-    }
-
-    function cancelEdit() {
-      editingBillId = null;
-      document.getElementById('subName').value = '';
-      document.getElementById('subCost').value = '';
-      document.getElementById('subRenewalDay').value = '';
-      document.getElementById('subSplit').value = '1';
-      document.getElementById('formBox').classList.remove('editing');
-      document.getElementById('sheetTitle').textContent = 'Add Expense or Bill';
-      document.getElementById('submitBtn').textContent = '+ Add Bill';
-      closeFormSheet();
-    }
-
-    function saveOrAddSubscription() {
-      const nameInput = document.getElementById('subName');
-      const costInput = document.getElementById('subCost');
-      const dayInput = document.getElementById('subRenewalDay');
-      const cycleInput = document.getElementById('subCycle');
-      const categoryInput = document.getElementById('subCategory');
-      const splitInput = document.getElementById('subSplit');
-
-      const name = nameInput.value.trim();
-      const amount = parseFloat(costInput.value);
-      const renewalDay = parseInt(dayInput.value, 10) || null;
-      const splitCount = parseInt(splitInput.value, 10) || 1;
-
-      if (!name || isNaN(amount) || amount <= 0) {
-        showToast('Please enter a name and valid amount');
-        return;
-      }
-
-      if (editingBillId !== null) {
-        subscriptions = subscriptions.map(function(item) {
-          if (item.id === editingBillId) {
-            return Object.assign({}, item, {
-              name: name,
-              amount: amount,
-              cycle: cycleInput.value,
-              category: categoryInput.value,
-              renewalDay: renewalDay,
-              splitCount: splitCount
-            });
-          }
-          return item;
-        });
-        cancelEdit();
-        showToast('Updated ' + name);
-      } else {
-        subscriptions.push({
-          id: Date.now(),
-          name: name,
-          amount: amount,
-          cycle: cycleInput.value,
-          category: categoryInput.value,
-          renewalDay: renewalDay,
-          splitCount: splitCount,
-          flaggedToCut: false
-        });
-        cancelEdit();
-        showToast('Added ' + name);
-      }
-
-      saveToBrowser();
-      switchTab('bills');
-      renderApp();
-    }
-
-    function toggleFlagToCut(id) {
-      subscriptions = subscriptions.map(function(item) {
-        if (item.id === id) {
-          return Object.assign({}, item, { flaggedToCut: !item.flaggedToCut });
-        }
-        return item;
-      });
-      saveToBrowser();
-      renderApp();
-    }
-
-    function removeSubscription(id) {
-      if (editingBillId === id) cancelEdit();
-      subscriptions = subscriptions.filter(function(item) { return item.id !== id; });
-      saveToBrowser();
-      renderApp();
-      showToast('Item removed');
-    }
-
-    function setFilter(category) {
-      activeCategory = category;
-      document.querySelectorAll('.filter-pill').forEach(function(btn) {
-        const isMatch = (category === 'All' && btn.textContent === 'All') || btn.textContent.startsWith(category);
-        btn.classList.toggle('active', isMatch);
-      });
-      renderApp();
-    }
-
-    // Load realistic multi-goal sample expenses (Rent, Groceries, Transport, Wi-Fi, Netflix, Gym)
-    function loadSamples() {
-      const todayDay = new Date().getDate();
-      const soonDay = ((todayDay + 2) % 28) + 1;
-      const s = CURRENCIES[currentCurrency].samples;
-
-      subscriptions = [
-        { id: 1, name: 'Apartment Rent (Shared)', amount: s[0], cycle: 'monthly', category: 'Rent', renewalDay: 1, splitCount: 2, flaggedToCut: false },
-        { id: 2, name: 'Weekly Grocery & Milk', amount: s[1], cycle: 'weekly', category: 'Groceries', renewalDay: soonDay, splitCount: 1, flaggedToCut: false },
-        { id: 3, name: 'Metro Pass & Fuel', amount: s[2], cycle: 'monthly', category: 'Transport', renewalDay: 10, splitCount: 1, flaggedToCut: false },
-        { id: 4, name: 'Home Fiber Wi-Fi & Power', amount: s[3], cycle: 'monthly', category: 'Utilities', renewalDay: 5, splitCount: 2, flaggedToCut: false },
-        { id: 5, name: 'Netflix Family Plan', amount: s[4], cycle: 'monthly', category: 'Entertainment', renewalDay: soonDay, splitCount: 4, flaggedToCut: false },
-        { id: 6, name: 'Unused Gym Membership', amount: s[5], cycle: 'monthly', category: 'Fitness', renewalDay: 18, splitCount: 1, flaggedToCut: true }
-      ];
-      cancelEdit();
-      saveToBrowser();
-      switchTab('bills');
-      renderApp();
-      showToast('Loaded Rent, Grocery, Transport & Bill samples!');
-    }
-
-    function clearAll() {
-      cancelEdit();
-      subscriptions = [];
-      saveToBrowser();
-      switchTab('bills');
-      renderApp();
-      showToast('All bills cleared');
-    }
-
-    function exportCSV() {
-      if (subscriptions.length === 0) {
-        showToast('Add or load some bills first before exporting!');
-        return;
-      }
-      const code = CURRENCIES[currentCurrency].code;
-      const headers = [
-        'Expense / Bill Name',
-        'Category',
-        'Billing Cycle',
-        'Total Billed Amount (' + code + ')',
-        'Split Between (People)',
-        'Your Monthly Share (' + code + ')',
-        'Your Yearly Share (' + code + ')',
-        'Due / Renewal Day',
-        'Audit Status'
-      ];
-      const rows = subscriptions.map(function(item) {
-        const splitCount = item.splitCount || 1;
-        const myMonthly = Math.round(getPersonalMonthlyShare(item) * 100) / 100;
-        const myYearly = Math.round(myMonthly * 12 * 100) / 100;
-        const status = item.flaggedToCut ? 'FLAGGED TO CUT' : 'KEEP';
-        const safeName = '"' + item.name.replace(/"/g, '""') + '"';
-        return [safeName, item.category, item.cycle, item.amount, splitCount, myMonthly, myYearly, item.renewalDay || '-', status].join(',');
-      });
-
-      const csvContent = [headers.join(',')].concat(rows).join('\n');
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'expense_and_bill_audit_' + code.toLowerCase() + '.csv';
-      link.click();
-      URL.revokeObjectURL(url);
-      showToast('CSV report downloaded');
-    }
-
-    function backupJSON() {
-      const backupPayload = {
-        version: 9,
-        exportedAt: new Date().toISOString(),
-        currency: currentCurrency,
-        monthlyBudget: monthlyBudget,
-        isDarkMode: isDarkMode,
-        subscriptions: subscriptions
-      };
-      const blob = new Blob([JSON.stringify(backupPayload, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'billaudit_backup.json';
-      link.click();
-      URL.revokeObjectURL(url);
-      showToast('Backup file saved');
-    }
-
-    function restoreJSON(event) {
-      const file = event.target.files && event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          const data = JSON.parse(e.target.result);
-          if (Array.isArray(data.subscriptions)) {
-            subscriptions = data.subscriptions;
-            if (data.currency && CURRENCIES[data.currency]) currentCurrency = data.currency;
-            if (typeof data.monthlyBudget === 'number' && data.monthlyBudget > 0) {
-              monthlyBudget = data.monthlyBudget;
-              document.getElementById('budgetLimitInput').value = monthlyBudget;
-            }
-            if (typeof data.isDarkMode === 'boolean') {
-              isDarkMode = data.isDarkMode;
-              applyTheme();
-            }
-            cancelEdit();
-            saveToBrowser();
-            switchTab('bills');
-            renderApp();
-            showToast('Backup restored successfully!');
-          } else {
-            showToast('Invalid backup file format');
-          }
-        } catch (err) {
-          showToast('Could not read that backup file');
-        }
-        event.target.value = '';
-      };
-      reader.readAsText(file);
-    }
-
-    function renderCategoryBreakdown() {
-      const barEl = document.getElementById('categoryBar');
-      const legendEl = document.getElementById('categoryLegend');
-
-      const totalsByCat = {};
-      CATEGORY_META.forEach(function(c) { totalsByCat[c.key] = 0; });
-      let grandTotal = 0;
-
-      for (const item of subscriptions) {
-        if (!item.flaggedToCut) {
-          const m = getPersonalMonthlyShare(item);
-          const key = totalsByCat.hasOwnProperty(item.category) ? item.category : 'Entertainment';
-          totalsByCat[key] += m;
-          grandTotal += m;
-        }
-      }
-
-      if (grandTotal <= 0) {
-        barEl.innerHTML = '<div class="bar-seg" style="width:100%; background:var(--pill-bg);"></div>';
-      } else {
-        barEl.innerHTML = CATEGORY_META.map(function(cat) {
-          const pct = (totalsByCat[cat.key] / grandTotal) * 100;
-          if (pct <= 0) return '';
-          return '<div class="bar-seg" style="width:' + pct.toFixed(1) + '%; background:' + cat.color + ';"></div>';
-        }).join('');
-      }
-
-      legendEl.innerHTML = CATEGORY_META.map(function(cat) {
-        const pct = grandTotal > 0 ? Math.round((totalsByCat[cat.key] / grandTotal) * 100) : 0;
-        return (
-          '<div class="legend-item">' +
-            '<span class="legend-dot" style="background:' + cat.color + ';"></span>' +
-            '<span>' + cat.label + ': <span class="legend-pct">' + pct + '%</span></span>' +
-          '</div>'
-        );
-      }).join('');
-    }
-
-    function getCategoryMeta(catKey) {
-      for (let i = 0; i < CATEGORY_META.length; i++) {
-        if (CATEGORY_META[i].key === catKey) return CATEGORY_META[i];
-      }
-      return CATEGORY_META[0];
-    }
-
-    function renderApp() {
-      const cur = CURRENCIES[currentCurrency];
-      const listElement = document.getElementById('subList');
-      const monthlyElement = document.getElementById('monthlyTotal');
-      const yearlyElement = document.getElementById('yearlyTotal');
-      const countElement = document.getElementById('activeCount');
-      const savedElement = document.getElementById('savedTotal');
-      const savedCountElement = document.getElementById('savedCount');
-      const searchQuery = (document.getElementById('searchInput').value || '').trim().toLowerCase();
-      const sortMode = document.getElementById('sortSelect').value;
-
-      document.getElementById('currencySelect').value = currentCurrency;
-      document.getElementById('budgetCurrencyLabel').textContent = cur.symbol;
-      document.getElementById('logoSymbol').textContent = cur.symbol;
-      document.getElementById('subCost').placeholder = 'Total Bill (' + cur.symbol + ')';
-
-      let visibleSubs = subscriptions.filter(function(item) {
-        const matchesCat = activeCategory === 'All' || item.category === activeCategory;
-        const matchesSearch = !searchQuery || item.name.toLowerCase().includes(searchQuery) || item.category.toLowerCase().includes(searchQuery);
-        return matchesCat && matchesSearch;
-      });
-
-      visibleSubs = visibleSubs.slice().sort(function(a, b) {
-        const costA = getPersonalMonthlyShare(a);
-        const costB = getPersonalMonthlyShare(b);
-        if (sortMode === 'cost-desc') return costB - costA;
-        if (sortMode === 'cost-asc') return costA - costB;
-        if (sortMode === 'name') return a.name.localeCompare(b.name);
-        if (sortMode === 'renewal') {
-          const daysA = getDaysUntilRenewal(a.renewalDay);
-          const daysB = getDaysUntilRenewal(b.renewalDay);
-          return (daysA === null ? 999 : daysA) - (daysB === null ? 999 : daysB);
-        }
-        return 0;
-      });
-
-      let keptMonthly = 0;
-      let keptCount = 0;
-      let savedMonthly = 0;
-      let flaggedCount = 0;
-
-      for (const item of visibleSubs) {
-        const myShare = getPersonalMonthlyShare(item);
-        if (item.flaggedToCut) {
-          savedMonthly += myShare;
-          flaggedCount++;
+    // Filter Catalog Category
+    function filterCatalogCategory(cat) {
+      activeCategory = cat;
+      const cats = ['ALL', 'Grocery', 'Food', 'Services', 'Digital', 'Retail'];
+      cats.forEach(function(c) {
+        const btn = document.getElementById('catBtn_' + c);
+        if (!btn) return;
+        if (c === cat) {
+          btn.className = 'px-2.5 py-1 rounded-full font-bold bg-blue-900 text-white shrink-0';
         } else {
-          keptMonthly += myShare;
-          keptCount++;
+          btn.className = 'px-2.5 py-1 rounded-full font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0';
+        }
+      });
+      const currentSearch = document.getElementById('itemNameInput').value;
+      renderCatalogChips(currentSearch);
+    }
+
+    // Render 100 Built-In Items in Scrollable Container & Highlight Matches
+    function renderCatalogChips(searchQuery) {
+      const container = document.getElementById('catalogScrollBox');
+      const badge = document.getElementById('matchStatusBadge');
+      if (!container) return;
+
+      const q = String(searchQuery || '').trim().toLowerCase();
+      let pool = BUILTIN_CATALOG.map(function(item, index) {
+        const isMatch = q.length > 0 && item.name.toLowerCase().indexOf(q) !== -1;
+        return { item: item, index: index, isMatch: isMatch };
+      });
+
+      if (activeCategory !== 'ALL') {
+        pool = pool.filter(function(entry) {
+          return entry.item.cat === activeCategory || entry.isMatch;
+        });
+      }
+
+      // Put matching items at the top when typing
+      if (q.length > 0) {
+        pool.sort(function(a, b) {
+          if (a.isMatch && !b.isMatch) return -1;
+          if (!a.isMatch && b.isMatch) return 1;
+          return a.index - b.index;
+        });
+      }
+
+      const anyMatch = pool.some(function(entry) { return entry.isMatch; });
+      if (badge) {
+        if (q.length > 0 && anyMatch) {
+          badge.classList.remove('hidden');
+        } else {
+          badge.classList.add('hidden');
         }
       }
 
-      const keptYearly = keptMonthly * 12;
-      const savedYearly = savedMonthly * 12;
+      let html = '';
+      pool.forEach(function(entry) {
+        const it = entry.item;
+        const btnClasses = entry.isMatch
+          ? 'bg-emerald-600 text-white border-emerald-700 ring-2 ring-emerald-300 font-bold'
+          : 'bg-white hover:bg-blue-50 text-slate-700 border-slate-300 font-medium';
 
-      monthlyElement.textContent = formatMoney(keptMonthly);
-      yearlyElement.textContent = formatMoney(keptYearly);
-      countElement.textContent = keptCount + (keptCount === 1 ? ' active item kept' : ' active items kept');
-      savedElement.textContent = formatMoney(savedYearly);
-      savedCountElement.textContent = flaggedCount + (flaggedCount === 1 ? ' item flagged to cut' : ' items flagged to cut');
+        html += '<button type="button" onclick="selectCatalogItem(' + entry.index + ')" class="text-xs px-2.5 py-1.5 rounded-lg border transition flex items-center gap-1 shadow-sm ' + btnClasses + '">' +
+                  '<span>＋ ' + escapeHtml(it.name) + '</span>' +
+                  '<span class="opacity-75 text-[10px]">(₹' + it.price + '/' + escapeHtml(it.unit) + ')</span>' +
+                '</button>';
+      });
 
-      const pct = monthlyBudget > 0 ? Math.round((keptMonthly / monthlyBudget) * 100) : 0;
-      const fillEl = document.getElementById('budgetFill');
-      const pctTextEl = document.getElementById('budgetPercentText');
-      const remTextEl = document.getElementById('budgetRemainingText');
+      container.innerHTML = html;
+    }
 
-      fillEl.style.width = Math.min(pct, 100) + '%';
-      fillEl.className = 'progress-fill';
-      if (pct >= 100) {
-        fillEl.classList.add('over');
-      } else if (pct >= 75) {
-        fillEl.classList.add('warn');
+    // When user types in Item Description box: highlight matches & auto-fill unit/price if exact match
+    function handleItemNameTyping(val) {
+      renderCatalogChips(val);
+      const clean = String(val || '').trim().toLowerCase();
+      if (!clean) return;
+      const exact = BUILTIN_CATALOG.find(function(it) {
+        return it.name.toLowerCase() === clean;
+      });
+      if (exact) {
+        document.getElementById('itemUnitInput').value = exact.unit;
+        document.getElementById('itemPriceInput').value = exact.price;
+        document.getElementById('itemGstInput').value = String(exact.gst);
       }
+    }
 
-      pctTextEl.textContent = pct + '% of ' + formatMoney(monthlyBudget) + ' budget used';
-      if (keptMonthly > monthlyBudget) {
-        remTextEl.textContent = 'Over by ' + formatMoney(keptMonthly - monthlyBudget) + '/mo';
-        remTextEl.style.color = 'var(--danger)';
+    // Tap a chip in the 100-item catalog to fill inputs AND add directly or let user adjust
+    function selectCatalogItem(idx) {
+      const chosen = BUILTIN_CATALOG[idx];
+      if (!chosen) return;
+      document.getElementById('itemNameInput').value = chosen.name;
+      document.getElementById('itemQtyInput').value = 1;
+      document.getElementById('itemUnitInput').value = chosen.unit;
+      document.getElementById('itemPriceInput').value = chosen.price;
+      document.getElementById('itemGstInput').value = String(chosen.gst);
+      renderCatalogChips(chosen.name);
+    }
+
+    function addItemFromForm() {
+      const nameEl = document.getElementById('itemNameInput');
+      const qtyEl = document.getElementById('itemQtyInput');
+      const unitEl = document.getElementById('itemUnitInput');
+      const priceEl = document.getElementById('itemPriceInput');
+      const gstEl = document.getElementById('itemGstInput');
+
+      const name = nameEl.value.trim() || 'Item / Service';
+      const qty = parseFloat(qtyEl.value) || 1;
+      const unit = unitEl.value || 'pcs';
+      const price = parseFloat(priceEl.value) || 0;
+      const gst = parseFloat(gstEl.value) || 0;
+
+      appState.items.push({
+        name: name,
+        qty: qty,
+        unit: unit,
+        price: price,
+        gst: gst
+      });
+
+      nameEl.value = '';
+      qtyEl.value = '1';
+      priceEl.value = '';
+      renderCatalogChips('');
+      saveState();
+      renderAll();
+    }
+
+    function removeItem(index) {
+      appState.items.splice(index, 1);
+      saveState();
+      renderAll();
+    }
+
+    function clearAllItems() {
+      appState.items = [];
+      saveState();
+      renderAll();
+    }
+
+    function calculateTotals() {
+      let subtotal = 0;
+      let totalGst = 0;
+      appState.items.forEach(function(item) {
+        const base = (Number(item.qty) || 0) * (Number(item.price) || 0);
+        const tax = base * ((Number(item.gst) || 0) / 100);
+        subtotal += base;
+        totalGst += tax;
+      });
+      return {
+        subtotal: subtotal,
+        totalGst: totalGst,
+        cgst: totalGst / 2,
+        sgst: totalGst / 2,
+        grandTotal: subtotal + totalGst
+      };
+    }
+
+    function renderAll() {
+      // Pro Status UI
+      const proBadge = document.getElementById('proStatusBadge');
+      const proBtn = document.getElementById('openProModalBtn');
+      const watermark = document.getElementById('invoiceWatermark');
+
+      if (appState.isPro) {
+        proBadge.classList.remove('hidden');
+        proBtn.classList.add('hidden');
+        watermark.classList.add('hidden');
       } else {
-        remTextEl.textContent = formatMoney(monthlyBudget - keptMonthly) + '/mo left';
-        remTextEl.style.color = 'var(--muted)';
+        proBadge.classList.add('hidden');
+        proBtn.classList.remove('hidden');
+        watermark.classList.remove('hidden');
       }
 
-      renderCategoryBreakdown();
+      // Render Edit Items List
+      const editList = document.getElementById('editItemsList');
+      if (appState.items.length === 0) {
+        editList.innerHTML = '<div class="text-xs text-slate-400 italic py-3 text-center bg-slate-50 rounded-lg border border-dashed border-slate-200">No items in bill yet. Tap any built-in item above or add one!</div>';
+      } else {
+        let listHtml = '';
+        appState.items.forEach(function(item, idx) {
+          const base = item.qty * item.price;
+          const tax = base * (item.gst / 100);
+          const total = base + tax;
+          listHtml += '<div class="flex items-center justify-between gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs sm:text-sm">' +
+                        '<div>' +
+                          '<div class="font-bold text-slate-800">' + (idx + 1) + '. ' + escapeHtml(item.name) + '</div>' +
+                          '<div class="text-xs text-slate-500">Qty: <strong>' + item.qty + ' ' + escapeHtml(item.unit || 'pcs') + '</strong> × Unit Price: <strong>₹' + Number(item.price).toFixed(2) + '</strong> (GST ' + item.gst + '%)</div>' +
+                        '</div>' +
+                        '<div class="flex items-center gap-3">' +
+                          '<span class="font-extrabold text-slate-900">₹' + total.toFixed(2) + '</span>' +
+                          '<button type="button" onclick="removeItem(' + idx + ')" class="text-red-500 hover:text-red-700 font-bold px-1.5 py-0.5 rounded bg-red-50">✕</button>' +
+                        '</div>' +
+                      '</div>';
+        });
+        editList.innerHTML = listHtml;
+      }
 
-      if (visibleSubs.length === 0) {
-        listElement.innerHTML = (
-          '<li class="empty-state">' +
-            '<div>No expenses or bills in this view yet.</div>' +
-            '<div class="empty-cta">' +
-              '<button class="btn-edit" onclick="openFormSheet()">+ Add a Bill</button>' +
-              '<button class="btn-edit" onclick="loadSamples()">Load Sample Bills</button>' +
-            '</div>' +
-          '</li>'
-        );
+      // Totals
+      const totals = calculateTotals();
+      document.getElementById('editSubtotalText').innerText = '₹' + totals.subtotal.toFixed(2);
+      document.getElementById('editGstText').innerText = '₹' + totals.totalGst.toFixed(2);
+      document.getElementById('editGrandTotalText').innerText = '₹' + totals.grandTotal.toFixed(2);
+
+      // Update Preview Paper Header
+      document.getElementById('prevBizLogo').innerText = appState.bizLogo || 'BIZ';
+      document.getElementById('prevBizName').innerText = appState.bizName || 'Your Business Name';
+      document.getElementById('prevBizAddress').innerText = appState.bizAddress || '';
+      const gstLine = document.getElementById('prevBizGstinLine');
+      if (appState.bizGstin) {
+        gstLine.classList.remove('hidden');
+        document.getElementById('prevBizGstin').innerText = appState.bizGstin;
+      } else {
+        gstLine.classList.add('hidden');
+      }
+
+      document.getElementById('prevDocTitle').innerText = appState.docTitle || 'TAX INVOICE';
+      document.getElementById('prevInvNumber').innerText = appState.invNumber || 'INV-101';
+      document.getElementById('prevInvDate').innerText = appState.invDate || formatTodayDate();
+      document.getElementById('prevCustName').innerText = appState.custName || 'Walk-in Customer';
+      document.getElementById('prevCustPhone').innerText = appState.custPhone ? ('Phone: ' + appState.custPhone) : '';
+      document.getElementById('prevCustAddress').innerText = appState.custAddress || '';
+
+      // Update Preview Table Body (Unit Price Column)
+      const tbody = document.getElementById('previewTableBody');
+      let tableHtml = '';
+      appState.items.forEach(function(item, i) {
+        const base = item.qty * item.price;
+        const tax = base * (item.gst / 100);
+        const lineTotal = base + tax;
+        tableHtml += '<tr>' +
+                       '<td class="py-2.5 px-2 text-slate-500">' + (i + 1) + '</td>' +
+                       '<td class="py-2.5 px-2 font-semibold text-slate-800">' + escapeHtml(item.name) + '</td>' +
+                       '<td class="py-2.5 px-2 text-center font-medium">' + item.qty + ' ' + escapeHtml(item.unit || 'pcs') + '</td>' +
+                       '<td class="py-2.5 px-2 text-right">₹' + Number(item.price).toFixed(2) + '</td>' +
+                       '<td class="py-2.5 px-2 text-right text-slate-600">' + item.gst + '% (₹' + tax.toFixed(2) + ')</td>' +
+                       '<td class="py-2.5 px-2 text-right font-bold text-slate-900">₹' + lineTotal.toFixed(2) + '</td>' +
+                     '</tr>';
+      });
+      tbody.innerHTML = tableHtml;
+
+      document.getElementById('prevSubtotal').innerText = '₹' + totals.subtotal.toFixed(2);
+      document.getElementById('prevCgst').innerText = '₹' + totals.cgst.toFixed(2);
+      document.getElementById('prevSgst').innerText = '₹' + totals.sgst.toFixed(2);
+      document.getElementById('prevGrandTotal').innerText = '₹' + totals.grandTotal.toFixed(2);
+
+      // Update Customer Payment UPI QR on Invoice
+      const qrImg = document.getElementById('custUpiQrImg');
+      const upiText = document.getElementById('prevUpiIdText');
+      if (appState.bizUpi) {
+        const upiUrl = 'upi://pay?pa=' + encodeURIComponent(appState.bizUpi) +
+                       '&pn=' + encodeURIComponent(appState.bizName || 'Merchant') +
+                       '&am=' + totals.grandTotal.toFixed(2) + '&cu=INR';
+        qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=' + encodeURIComponent(upiUrl);
+        qrImg.classList.remove('hidden');
+        upiText.innerText = 'UPI ID: ' + appState.bizUpi;
+      } else {
+        qrImg.classList.add('hidden');
+        upiText.innerText = 'Add your UPI ID in Tab 1 to show QR code';
+      }
+
+      // Saved Bills Badge & List
+      document.getElementById('savedCountBadge').innerText = appState.savedBills.length;
+      renderSavedBills();
+    }
+
+    function switchTab(tab) {
+      const tabs = ['edit', 'preview', 'history'];
+      tabs.forEach(function(t) {
+        const sec = document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1));
+        const btn = document.getElementById('tabBtn' + t.charAt(0).toUpperCase() + t.slice(1));
+        if (t === tab) {
+          sec.classList.remove('hidden');
+          btn.className = 'flex-1 py-2.5 text-center border-b-2 border-amber-400 text-amber-300';
+        } else {
+          sec.classList.add('hidden');
+          btn.className = 'flex-1 py-2.5 text-center border-b-2 border-transparent text-blue-200 hover:text-white';
+        }
+      });
+      renderAll();
+    }
+
+    function shareOnWhatsApp() {
+      const totals = calculateTotals();
+      let msg = '*' + (appState.bizName || 'INVOICE') + '*\n';
+      msg += (appState.docTitle || 'TAX INVOICE') + ' #' + (appState.invNumber || '101') + '\n';
+      msg += 'Date: ' + (appState.invDate || '') + '\n';
+      msg += 'Customer: ' + (appState.custName || 'Walk-in') + '\n';
+      msg += '---------------------------\n';
+      appState.items.forEach(function(it, idx) {
+        const lineTotal = (it.qty * it.price) * (1 + it.gst / 100);
+        msg += (idx + 1) + '. ' + it.name + ' (' + it.qty + ' ' + (it.unit || 'pcs') + ' × Unit Price ₹' + it.price + ') = ₹' + lineTotal.toFixed(2) + '\n';
+      });
+      msg += '---------------------------\n';
+      msg += 'Subtotal: ₹' + totals.subtotal.toFixed(2) + '\n';
+      msg += 'Total GST: ₹' + totals.totalGst.toFixed(2) + '\n';
+      msg += '*Grand Total: ₹' + totals.grandTotal.toFixed(2) + '*\n';
+      if (appState.bizUpi) {
+        msg += '\nPay via UPI: ' + appState.bizUpi;
+      }
+      if (!appState.isPro) {
+        msg += '\n\n_Created with GST Invoice & Bill Maker_';
+      }
+
+      const phoneClean = (appState.custPhone || '').replace(/\D/g, '');
+      const waBase = phoneClean.length >= 10
+        ? 'https://wa.me/' + (phoneClean.length === 10 ? '91' + phoneClean : phoneClean)
+        : 'https://wa.me/';
+      window.open(waBase + '?text=' + encodeURIComponent(msg), '_blank');
+    }
+
+    function saveCurrentBill() {
+      const totals = calculateTotals();
+      const record = {
+        id: Date.now(),
+        invNumber: appState.invNumber,
+        invDate: appState.invDate,
+        custName: appState.custName,
+        grandTotal: totals.grandTotal,
+        itemsCount: appState.items.length
+      };
+      appState.savedBills.unshift(record);
+      saveState();
+      renderAll();
+      alert('Invoice #' + appState.invNumber + ' saved to history!');
+    }
+
+    function renderSavedBills() {
+      const box = document.getElementById('savedBillsContainer');
+      if (!box) return;
+      if (appState.savedBills.length === 0) {
+        box.innerHTML = '<div class="text-slate-400 italic py-4 text-center">No saved bills yet. Click "Save Bill" on Tab 1 to store invoices here.</div>';
         return;
       }
-
-      listElement.innerHTML = visibleSubs.map(function(item) {
-        const splitCount = (item.splitCount && item.splitCount > 1) ? item.splitCount : 1;
-        const fullMonthly = getFullMonthlyEquivalent(item.amount, item.cycle);
-        const myMonthly = fullMonthly / splitCount;
-        const myYearly = myMonthly * 12;
-        const catMeta = getCategoryMeta(item.category);
-
-        const cycleLabel = item.cycle === 'monthly'
-          ? 'billed monthly'
-          : formatMoney(item.amount) + ' / ' + item.cycle;
-
-        const splitBadge = splitCount > 1
-          ? '<span class="split-tag">Split ' + DIVIDE_SYMBOL + splitCount + ' (Full: ' + formatMoney(fullMonthly) + ')</span>'
-          : '';
-
-        const daysLeft = getDaysUntilRenewal(item.renewalDay);
-        let renewalBadge = '';
-        if (daysLeft !== null && !item.flaggedToCut) {
-          if (daysLeft === 0) {
-            renewalBadge = '<span class="alert-tag">Due Today!</span>';
-          } else if (daysLeft <= 5) {
-            renewalBadge = '<span class="alert-tag">Due in ' + daysLeft + 'd</span>';
-          } else {
-            renewalBadge = '<span class="cat-tag">Day ' + item.renewalDay + '</span>';
-          }
-        }
-
-        const statusBadge = item.flaggedToCut
-          ? '<span class="saved-tag">Saves ' + formatMoney(myYearly) + '/yr</span>'
-          : '';
-
-        const auditBtnLabel = item.flaggedToCut ? 'Keep Bill' : 'Flag to Cut';
-        const auditBtnClass = item.flaggedToCut ? 'btn-audit keep' : 'btn-audit';
-
-        return (
-          '<li class="sub-item ' + (item.flaggedToCut ? 'flagged' : '') + '">' +
-            '<div class="card-top">' +
-              '<div class="card-left">' +
-                '<div class="cat-avatar" style="background:' + catMeta.color + ';">' + catMeta.short + '</div>' +
-                '<div class="sub-info">' +
-                  '<div class="sub-title-row">' +
-                    '<span class="sub-title">' + item.name + '</span>' +
+      let html = '';
+      appState.savedBills.forEach(function(b, idx) {
+        html += '<div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200">' +
+                  '<div>' +
+                    '<div class="font-bold text-slate-800">#' + escapeHtml(b.invNumber) + ' — ' + escapeHtml(b.custName) + '</div>' +
+                    '<div class="text-xs text-slate-500">' + escapeHtml(b.invDate) + ' • ' + b.itemsCount + ' items</div>' +
                   '</div>' +
-                  '<div class="sub-title-row">' +
-                    '<span class="cat-tag">' + catMeta.label + '</span>' +
-                    splitBadge +
-                    renewalBadge +
-                    statusBadge +
+                  '<div class="flex items-center gap-3">' +
+                    '<span class="font-extrabold text-blue-900">₹' + Number(b.grandTotal).toFixed(2) + '</span>' +
+                    '<button type="button" onclick="deleteSavedBill(' + idx + ')" class="text-red-500 hover:text-red-700 font-bold">✕</button>' +
                   '</div>' +
-                  '<span class="sub-yearly">' + formatMoney(myYearly) + '/yr (' + cycleLabel + ')</span>' +
-                '</div>' +
-              '</div>' +
-              '<div class="price-col">' +
-                '<span class="sub-price">' + formatMoney(myMonthly) + '</span>' +
-                '<span class="sub-cycle-sub">per month</span>' +
-              '</div>' +
-            '</div>' +
-            '<div class="sub-actions">' +
-              '<button class="btn-edit" onclick="startEdit(' + item.id + ')">Edit</button>' +
-              '<button class="' + auditBtnClass + '" onclick="toggleFlagToCut(' + item.id + ')">' + auditBtnLabel + '</button>' +
-              '<button class="btn-delete" title="Delete permanently" onclick="removeSubscription(' + item.id + ')">' + TIMES_SYMBOL + '</button>' +
-            '</div>' +
-          '</li>'
-        );
-      }).join('');
-    }
-
-    document.getElementById('subCost').addEventListener('keydown', function(event) {
-      if (event.key === 'Enter') saveOrAddSubscription();
-    });
-
-    document.getElementById('budgetLimitInput').value = monthlyBudget;
-    applyTheme();
-    renderApp();
-
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register('./sw.js').catch(function() {});
+                '</div>';
       });
+      box.innerHTML = html;
     }
+
+    function deleteSavedBill(idx) {
+      appState.savedBills.splice(idx, 1);
+      saveState();
+      renderAll();
+    }
+
+    function exportSavedBillsCsv() {
+      if (appState.savedBills.length === 0) {
+        alert('No saved bills to export yet!');
+        return;
+      }
+      let csv = 'Invoice Number,Date,Customer Name,Items Count,Grand Total (INR)\n';
+      appState.savedBills.forEach(function(b) {
+        csv += '"' + b.invNumber + '","' + b.invDate + '","' + b.custName + '",' + b.itemsCount + ',' + Number(b.grandTotal).toFixed(2) + '\n';
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'gst_invoices_report.csv';
+      a.click();
+    }
+
+    // Pro Modal & Key Generation Logic
+    function openProModal() {
+      const m = document.getElementById('proModal');
+      m.classList.remove('hidden');
+      m.classList.add('flex');
+    }
+
+    function closeProModal() {
+      const m = document.getElementById('proModal');
+      m.classList.add('hidden');
+      m.classList.remove('flex');
+    }
+
+    function makeKeyFromSeed(seedText) {
+      const clean = String(seedText || 'USER').replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+      const prefix = (clean + 'XXXX').substring(0, 4);
+      let hash = 0;
+      for (let i = 0; i < clean.length; i++) {
+        hash = (hash * 31 + clean.charCodeAt(i)) % 9000;
+      }
+      const num = 1000 + Math.abs(hash);
+      return 'GSTPRO-' + prefix + '-' + num;
+    }
+
+    function verifyUtrAndAutoUnlock() {
+      const shop = document.getElementById('utrBizNameInput').value.trim() || appState.bizName || 'SHOP';
+      const utr = document.getElementById('utrNumberInput').value.replace(/\D/g, '');
+      if (utr.length !== 12) {
+        alert('Please enter a valid 12-digit UPI Reference / UTR number from your UPI payment screen.');
+        return;
+      }
+      const generatedKey = makeKeyFromSeed(shop + utr.slice(-4));
+      appState.isPro = true;
+      appState.proKey = generatedKey;
+      saveState();
+      renderAll();
+
+      const resBox = document.getElementById('autoKeyResultBox');
+      resBox.classList.remove('hidden');
+      resBox.innerHTML = '🎉 Payment Ref Verified!<br>Your Lifetime Pass Key: <span class="font-mono underline">' + generatedKey + '</span><br>Pro Features are now UNLOCKED!';
+    }
+
+    function activateManualKey() {
+      const val = document.getElementById('manualKeyInput').value.trim().toUpperCase();
+      if (val.indexOf('GSTPRO-') === 0 && val.length >= 12) {
+        appState.isPro = true;
+        appState.proKey = val;
+        saveState();
+        renderAll();
+        closeProModal();
+        alert('Pro Edition Unlocked Successfully!');
+      } else {
+        alert('Invalid Pass Key format. Key must start with GSTPRO-XXXX-XXXX.');
+      }
+    }
+
+    function toggleSellerTool() {
+      const box = document.getElementById('sellerToolBox');
+      box.classList.toggle('hidden');
+    }
+
+    function generateSellerKey() {
+      const cust = document.getElementById('sellerCustomerInput').value.trim() || 'CUST';
+      const key = makeKeyFromSeed(cust);
+      document.getElementById('sellerKeyOutput').innerText = 'Customer Key: ' + key;
+    }
+
+    // Initialize App on Load
+    window.addEventListener('DOMContentLoaded', function() {
+      loadState();
+      populateFormFromState();
+      renderCatalogChips('');
+      renderAll();
+    });
   </script>
 </body>
 </html>
