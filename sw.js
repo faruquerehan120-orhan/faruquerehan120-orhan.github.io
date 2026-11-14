@@ -1,48 +1,12 @@
-const CACHE_NAME = 'bill-audit-v6-cache';
-const ASSETS = [
-  './',
-  './index.html',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png',
-  './icon-maskable.png'
-];
-
-self.addEventListener('install', function(event) {
+/* Cleanup: replaces the old Bill Audit Tracker service worker on the main address.
+   It removes the old saved copies and then switches itself off, so the new Kaaj Tools pages always load fresh. */
+self.addEventListener('install', function () { self.skipWaiting(); });
+self.addEventListener('activate', function (event) {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(function(cache) {
-      return cache.addAll(ASSETS);
-    })
-  );
-  self.skipWaiting();
-});
-
-self.addEventListener('activate', function(event) {
-  event.waitUntil(
-    caches.keys().then(function(keys) {
-      return Promise.all(
-        keys.filter(function(key) { return key !== CACHE_NAME; })
-            .map(function(key) { return caches.delete(key); })
-      );
-    }).then(function() {
-      return self.clients.claim();
-    })
-  );
-});
-
-// Network-first strategy so uploading a new index.html to GitHub updates the phone app immediately!
-self.addEventListener('fetch', function(event) {
-  event.respondWith(
-    fetch(event.request)
-      .then(function(networkResponse) {
-        const copy = networkResponse.clone();
-        caches.open(CACHE_NAME).then(function(cache) {
-          cache.put(event.request, copy);
-        });
-        return networkResponse;
-      })
-      .catch(function() {
-        return caches.match(event.request);
-      })
+    caches.keys()
+      .then(function (keys) { return Promise.all(keys.map(function (k) { return caches.delete(k); })); })
+      .then(function () { return self.registration.unregister(); })
+      .then(function () { return self.clients.matchAll({ type: 'window' }); })
+      .then(function (clients) { clients.forEach(function (c) { try { c.navigate(c.url); } catch (e) {} }); })
   );
 });
