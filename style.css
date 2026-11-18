@@ -45,3 +45,9 @@ footer.site a{color:#cbd5e1;margin-right:14px}
 footer.site .cols{display:flex;gap:30px;flex-wrap:wrap;justify-content:space-between}
 @media(max-width:560px){nav a{margin-left:10px;font-size:13px}.hero{padding:40px 0}}
 .grid.four{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-top:10px}
+.shots figure{margin:0}
+.shots img{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:12px;box-shadow:0 2px 10px rgba(15,23,42,.06);background:#fff}
+.shots figcaption{font-size:14px;color:var(--muted);margin-top:8px}
+.card img.thumb{width:100%;height:190px;object-fit:cover;object-position:top;border:1px solid var(--line);border-radius:10px;margin-bottom:12px;background:#fff}
